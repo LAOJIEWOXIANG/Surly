@@ -1,7 +1,7 @@
 public class testRelationPrint {
    public static void main(String[] args) {
       Relation r = new Relation("Prereq");
-      r.addToSchema(new Attribute("CHUM","CHAR",8));
+      r.addToSchema(new Attribute("CNUM","CHAR",8));
       r.addToSchema(new Attribute("PNUM","CHAR",8));
       AttributeValue a1 = new AttributeValue("CNUM","CSCI141");
       AttributeValue a2 = new AttributeValue("PNUM","MATH112");
