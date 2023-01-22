@@ -1,69 +1,73 @@
 import java.util.LinkedList;
 
 public class Relation {
-  private String name; /* name of the relation */
-  private LinkedList<Attribute> schema; /* Schema of the relation */
-  private LinkedList<Tuple> tuples; /* Tuples stored on the relation */
-  
-  public Relation(String name) {
-     this.name = name;
-     schema = new LinkedList<>();
-     tuples = new LinkedList<>();
-  }
-  
-  /* Formats and prints the relation's name, schema, and tuples */
-  public void print() {
-     int totalLength = 0;
-     int numAttributes = schema.size();
-     for (Attribute a : schema) {
-        totalLength += a.getLength() + 4;
-     }
-     //prinnt table name
-     totalLength += 1;
-     printMany('*',totalLength);
-     System.out.print("| ");
-     System.out.printf("%-" + (totalLength - 3) +"S", name);
-     System.out.println('|');
-     printMany('-',totalLength);
-
-     //print attribute names
-     for (Attribute a : schema) {
-        System.out.print("| ");
-        System.out.printf("%-" + (a.getLength() + 2) +"S", a.getName());
-     }
-     System.out.println('|');
-     printMany('-',totalLength);
-     
-     //print attribute values
-     for (Tuple t : tuples) {
+    private String name; /* name of the relation */
+    private LinkedList<Attribute> schema; /* Schema of the relation */
+    private LinkedList<Tuple> tuples; /* Tuples stored on the relation */
+    
+    public Relation(String name) {
+        this.name = name;
+        schema = new LinkedList<>();
+        tuples = new LinkedList<>();
+    }
+    
+    /* Formats and prints the relation's name, schema, and tuples */
+    public void print() {
+        
+        /* Calculates how much space each element needs in the table. */
+        int[] lengths = new int[schema.size()];
+        int totalLength = 0;
         for (int i = 0; i < schema.size(); i++) {
-           int length = schema.get(i).getLength();
-           System.out.print("| ");                                        //need value of attributevalue = name of attribute at schema(i)
-           System.out.printf("%-" + (length + 2) +"S", t.getValue(schema.get(i).getName()));
+            Attribute a = schema.get(i);
+            /* Gets the size of the attribute's max length or the
+            length of the attribute name, whichever is largest*/
+            int length = Math.max(a.getLength(), a.getName().length());
+            lengths[i] = length;
+            totalLength += length + 3; /* Gives buffer space for " " and "|". */
+        }
+        totalLength++; /* One more space for the rightmost "|". */
+        System.out.println("*".repeat(totalLength));
+        printRelationName(totalLength);
+        System.out.println("-".repeat(totalLength));
+        printSchema(totalLength,lengths);
+        System.out.println("-".repeat(totalLength));
+        printTuples(totalLength,lengths);
+        System.out.println("*".repeat(totalLength));  
+    }
+    
+    /* Formats and prints the name of the relation. */
+    private void printRelationName(int length) {
+        System.out.print("| ");
+        System.out.printf("%-" + (length - 3) +"S", name);
+        System.out.println('|');
+    }
+    
+    /* Formats and prints the schema of the relation. */
+    private void printSchema(int length, int[] lengths) {
+        for (int i = 0; i < schema.size(); i++) {
+            System.out.print("| ");
+            System.out.printf("%-" + (lengths[i] + 1) +"S", schema.get(i).getName());
         }
         System.out.println('|');
-     }
-      printMany('*',totalLength);
-  }
-  
-  private void printMany(char c, int size) {
-     for (int i = 0; i < size; i++) {
-        System.out.print(c);
-     }
-     System.out.println();
-  }
-  
-  public void addToSchema(Attribute a) {
-     schema.add(a);
-  }
-
-  /* Adds the specified tuple to the relation */
-  public void insert(Tuple tuple) {
-     tuples.add(tuple);
-  }
-
-  /* Remove all tuples from the relation */
-  public void delete() {
-
-  }
+    }
+    
+    /* Formats and prints the tuples of the relation. */
+    private void printTuples(int length, int[] lengths) {
+        for (Tuple t : tuples) {
+            for (int i = 0; i < schema.size(); i++) {
+                System.out.print("| ");
+                System.out.printf("%-" + (lengths[i] + 1) + "S", t.getValue(i));
+            }
+            System.out.println('|');
+        }
+    }
+    
+    /* Adds the specified tuple to the relation */
+    public void insert(Tuple tuple) {
+        tuples.add(tuple);
+    }
+    
+    /* Remove all tuples from the relation */
+    public void delete() {
+    }
 }
