@@ -66,9 +66,10 @@ public class LexicalAnalyzer {
       case "PRINT":
         PrintParser print = new PrintParser(command);
         if (print.getIsValidSyntax()) {
-          System.out
-              .println("Printing " + print.parseAttributeCount() + " relations: "
-                  + String.join(", ", print.parseRelationNames()) + ".");
+          /* for (String relationName: print.parseRelationNames()) {
+                SurlyDatabase.getRelation(relationName).print();
+             }
+          */
         } else {
           System.out.println("INVALID SYNTAX: " + command);
         }
