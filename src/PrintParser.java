@@ -21,11 +21,6 @@ public class PrintParser {
     return attributes;
   }
 
-  /* Parses and returns the number of attributes to print */
-  public int parseAttributeCount() {
-    return parseRelationNames().length;
-  }
-
   public boolean getIsValidSyntax() {
     return this.isValidSyntax;
   }
