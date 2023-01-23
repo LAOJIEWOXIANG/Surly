@@ -62,6 +62,11 @@ public class Relation {
         }
     }
     
+    /* Accessor method for name. */
+    public String getName() {
+       return name;
+    }
+    
     /* Adds the specified tuple to the relation */
     public void insert(Tuple tuple) {
         tuples.add(tuple);
