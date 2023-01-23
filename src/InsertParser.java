@@ -11,13 +11,13 @@ public class InsertParser {
     this.isValidSyntax = verifySyntax();
   }
 
-  /* Parses and returns the name of the relation to insert into */
+  /* Parses and returns the name of the relation to insert into*/
   public String parseRelationName() {
     String[] words = this.input.split("\\s+");
     return words[1];
   }
 
-  /* Parses and returns the number of attributes to insert */
+  /* Parses and returns the number of attributes to insert 
   public int parseAttributeCount() {
     String command = removeSemicolon(this.input);
     /*
@@ -26,14 +26,14 @@ public class InsertParser {
      * split by the regular expression (?=([^']*'[^']*')*[^']*$), which ensures that
      * the split only happens if the whitespace character is not enclosed within
      * single quotes.
-     */
+     
     String[] parts = command.split("\\s+(?=([^']*'[^']*')*[^']*$)");
     String[] attributes = new String[parts.length - 2];
     System.arraycopy(parts, 2, attributes, 0, parts.length - 2);
     attributes = Arrays.stream(attributes).map(String::trim).toArray(String[]::new);
 
     return attributes.length;
-  }
+  } */
 
   public boolean getIsValidSyntax() {
     return this.isValidSyntax;
