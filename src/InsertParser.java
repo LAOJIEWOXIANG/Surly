@@ -34,6 +34,31 @@ public class InsertParser {
 
     return attributes.length;
   } */
+  
+  public Tuple parseTuple() {
+     String name = input.split("\\s+")[1];
+     String attributes = input.split("\\s+",3)[2];
+     Tuple tuple = new Tuple();
+     for (int i = 0; i < attributes.length(); i++) {
+       if (attributes.charAt(i) == 39) {
+          i++;
+          String betweenQuotes = "";
+          while (attributes.charAt(i) != 39) {
+             betweenQuotes+= attributes.charAt(i);
+             i++;
+          }
+          tuple.add(new AttributeValue(name,betweenQuotes));
+       } else if (attributes.charAt(i) != ' ') {
+          String element = "";
+          while (i < attributes.length() && attributes.charAt(i) != ' ') {
+             element += attributes.charAt(i);
+             i++;
+          }
+          tuple.add(new AttributeValue(name,element));
+       }
+     }
+     return tuple;
+  }
 
   public boolean getIsValidSyntax() {
     return this.isValidSyntax;
