@@ -36,10 +36,12 @@ public class InsertParser {
   } */
   
   public Tuple parseTuple() {
-     String name = input.split("\\s+")[1];
-     String attributes = input.split("\\s+",3)[2];
+     String attributes = input.substring(0,input.length() - 1); //remove semicolon
+     attributes = attributes.split("\\s+",3)[2]; //get only attribute values
      Tuple tuple = new Tuple();
      for (int i = 0; i < attributes.length(); i++) {
+       /* If the current char is a single quote, add everything
+       inside it to the tuple. */
        if (attributes.charAt(i) == 39) {
           i++;
           String betweenQuotes = "";
@@ -47,17 +49,20 @@ public class InsertParser {
              betweenQuotes+= attributes.charAt(i);
              i++;
           }
-          tuple.add(new AttributeValue(name,betweenQuotes));
+          tuple.add(new AttributeValue("",betweenQuotes));
+          
+       /* If the current char isn't a space, read until a space
+       and add that string to the tuple. */
        } else if (attributes.charAt(i) != ' ') {
           String element = "";
           while (i < attributes.length() && attributes.charAt(i) != ' ') {
              element += attributes.charAt(i);
              i++;
           }
-          tuple.add(new AttributeValue(name,element));
-       }
-     }
-     return tuple;
+          tuple.add(new AttributeValue("",element)); //sets name to empty string for now.
+       }                                            // I think it needs to be set when added
+     }                                              //to the relation because I don't have a way
+     return tuple;                                  //of accessing the schema from here.
   }
 
   public boolean getIsValidSyntax() {

@@ -56,8 +56,10 @@ public class LexicalAnalyzer {
       case "INSERT":
         InsertParser insert = new InsertParser(command);
         if (insert.getIsValidSyntax()) {
-          System.out
-              .println("Inserting " + insert.parseAttributeCount() + " attributes into " + insert.parseRelationName());
+          // once we have SurlyDatabase working the command here is
+          // SurlyDatabase.getRelation(insert.parseRelationName()).insert(insert.parseTuple)
+          // The Relation.insert(Tuple tuple) function must set the names of the attribute values to
+          //  names in the schema. 
         } else {
           System.out.println("INVALID SYNTAX: " + command);
         }
