@@ -23,6 +23,11 @@ public class Tuple {
         return null;
     }
     
+    /* Returns the value of the attribute at index i in the tuple. */
+    public String getValue(int i) {
+       return values.get(i).getValue();
+    }
+    
     /* Adds given AttributeValue to the list of values. */
     public void add(AttributeValue attribute) {
         values.add(attribute);
