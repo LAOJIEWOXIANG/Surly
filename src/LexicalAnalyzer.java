@@ -86,6 +86,13 @@ public class LexicalAnalyzer {
       }
       
       break;
+      case "DESTORY":
+      DestroyParser destory = new DestroyParser(command);
+      if (destory.getIsValidSyntax()) {
+
+      } else {
+        System.out.println("INVALID SYNTAX: " + command);
+      }
       default:
       System.out.println("INVALID COMMAND: " + command);
     }
