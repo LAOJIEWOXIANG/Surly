@@ -12,23 +12,30 @@ public class RelationParser {
 
   }
 
-  /* Parses and returns the name of the relation to create */
-  public String parseRelationName() {
-    String[] words = this.input.split("\\s+");
-    return words[1];
-  }
-
-  /* Parses and returns the number of attributes to create */
-  public int parseAttributeCount() {
-    // pick out attributes from string with regex and process to create a list of
-    // attributes
-    String[] parts = this.input.split("[\\(\\),;]+");
-    String[] attributes = new String[parts.length - 1];
-    System.arraycopy(parts, 1, attributes, 0, parts.length - 1);
-    attributes = Arrays.stream(attributes).map(String::trim).toArray(String[]::new);
-
-    return attributes.length;
-  }
+   /* Parses and returns the number of attributes to create */
+    public Relation parseRelation() {
+        String name = input.split("\\s+")[1];
+        Relation relation = new Relation(name);
+        /* Isolates the attribute definitions. */
+        String attr = input.split("\\s+",3)[2].trim();
+        
+        /* Need to handle bad parentheses syntax. */
+        
+        /* Array of individual attribute definitions. */
+        String[] attrDef = attr.substring(attr.indexOf("(")+1, attr.length() - 2).split(",");
+        
+        /* Array of arrays containing isolated elements of each attribute definition. */    
+        for (int i = 0; i < attrDef.length; i++) {
+             String[] elements = attrDef[i].trim().split("\\s+"); //can add error checking here later
+             /* Ensures attribute definition has exactly 3 elements. */
+             if (elements.length != 3) {
+                System.out.println("Invalid attribute length.");
+                return null;
+            }
+            relation.addToSchema(new Attribute(elements[0],elements[1],Integer.valueOf(elements[2])));
+        }
+        return relation;
+    }
 
   public boolean getIsValidSyntax() {
     return this.isValidSyntax;

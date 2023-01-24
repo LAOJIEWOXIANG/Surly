@@ -78,8 +78,7 @@ public class LexicalAnalyzer {
           String[] names = print.parseRelationNames();
             for (String relationName: names) {
                 database.getRelation(relationName).print();
-             }
-          
+             }  
         } else {
           System.out.println("INVALID SYNTAX: " + command);
         }

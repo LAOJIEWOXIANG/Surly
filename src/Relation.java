@@ -67,9 +67,14 @@ public class Relation {
        return name;
     }
     
-    /* Adds the specified tuple to the relation */
+    /* Adds the specified tuple to the relation. */
     public void insert(Tuple tuple) {
         tuples.add(tuple);
+    }
+    
+   /* Adds specified attribute to the schema. */
+    public void addToSchema(Attribute attribute) {
+       schema.add(attribute);
     }
     
     /* Remove all tuples from the relation */
