@@ -54,7 +54,8 @@ public class LexicalAnalyzer {
       case "RELATION":
       RelationParser relation = new RelationParser(command);
       if (relation.getIsValidSyntax()) {
-        database.createRelation(relation.parseRelation());
+        Relation r = relation.parseRelation();
+        database.createRelation(r);
       } else {
         System.out.println("INVALID SYNTAX: " + command);
       }
@@ -63,7 +64,9 @@ public class LexicalAnalyzer {
       case "INSERT":
       InsertParser insert = new InsertParser(command);
       if (insert.getIsValidSyntax()) {
-        database.getRelation(insert.parseRelationName()).insert(insert.parseTuple());
+        String relationName = insert.parseRelationName();
+        Tuple tuple = insert.parseTuple();
+        database.getRelation(relationName).insert(tuple);
         // The Relation.insert(Tuple tuple) function must set the names of the attribute values to
         //  names in the schema.
       } else {
