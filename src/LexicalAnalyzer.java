@@ -3,10 +3,18 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class LexicalAnalyzer {
+  
+  private SurlyDatabase database;
+  
+  /* Constructor to initialize the database. */
+  public LexicalAnalyzer() {
+    database = new SurlyDatabase();
+  }
+  
   /*
-   * Parses the given file into individual commands
-   * and passes each to the appropriate parser
-   */
+  * Parses the given file into individual commands
+  * and passes each to the appropriate parser
+  */
   public void run(String fileName) {
     try {
       FileReader fr = new FileReader(fileName);
@@ -32,11 +40,11 @@ public class LexicalAnalyzer {
       e.printStackTrace();
     }
   }
-
+  
   /*
-   * Given a command string, first process the string and remove commented lines.
-   * Then verify the command is syntactically correct and execute it.
-   */
+  * Given a command string, first process the string and remove commented lines.
+  * Then verify the command is syntactically correct and execute it.
+  */
   private void processCommand(String command) {
     command = dropComment(command);
     command = command.trim();
@@ -44,47 +52,48 @@ public class LexicalAnalyzer {
     String commandType = words[0];
     switch (commandType) {
       case "RELATION":
-        RelationParser relation = new RelationParser(command);
-        if (relation.getIsValidSyntax()) {
-          System.out.println(
-              "Creating " + relation.parseRelationName() + " with " + relation.parseAttributeCount() + " attributes.");
-        } else {
-          System.out.println("INVALID SYNTAX: " + command);
-        }
-
-        break;
+      RelationParser relation = new RelationParser(command);
+      if (relation.getIsValidSyntax()) {
+        Relation r = relation.parseRelation();
+        database.createRelation(r);
+      } else {
+        System.out.println("INVALID SYNTAX: " + command);
+      }
+      
+      break;
       case "INSERT":
-        InsertParser insert = new InsertParser(command);
-        if (insert.getIsValidSyntax()) {
-          // once we have SurlyDatabase working the command here is
-          // SurlyDatabase.getRelation(insert.parseRelationName()).insert(insert.parseTuple)
-          // The Relation.insert(Tuple tuple) function must set the names of the attribute values to
-          //  names in the schema. 
-        } else {
-          System.out.println("INVALID SYNTAX: " + command);
-        }
-
-        break;
+      InsertParser insert = new InsertParser(command);
+      if (insert.getIsValidSyntax()) {
+        String relationName = insert.parseRelationName();
+        Tuple tuple = insert.parseTuple();
+        database.getRelation(relationName).insert(tuple);
+        // The Relation.insert(Tuple tuple) function must set the names of the attribute values to
+        //  names in the schema.
+      } else {
+        System.out.println("INVALID SYNTAX: " + command);
+      }
+      
+      break;
       case "PRINT":
-        PrintParser print = new PrintParser(command);
-        if (print.getIsValidSyntax()) {
-          /* for (String relationName: print.parseRelationNames()) {
-                SurlyDatabase.getRelation(relationName).print();
-             }
-          */
-        } else {
-          System.out.println("INVALID SYNTAX: " + command);
+      PrintParser print = new PrintParser(command);
+      if (print.getIsValidSyntax()) {
+        String[] names = print.parseRelationNames();
+        for (String relationName: names) {
+          database.getRelation(relationName).print();
         }
-
-        break;
+      } else {
+        System.out.println("INVALID SYNTAX: " + command);
+      }
+      
+      break;
       default:
-        System.out.println("INVALID COMMAND: " + command);
+      System.out.println("INVALID COMMAND: " + command);
     }
   }
-
+  
   // Drops commented lines from a string
   private String dropComment(String command) {
     return command.replaceAll("(?m)^#.*$", "");
   }
-
+  
 }
