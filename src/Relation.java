@@ -71,6 +71,10 @@ public class Relation {
     public void insert(Tuple tuple) {
         for (int i = 0; i < schema.size(); i++) {
            tuple.setName(i,schema.get(i).getName());
+           int maxLength = schema.get(i).getLength();
+           if (tuple.getValue(i).length() > maxLength) {
+              tuple.trimValue(i, maxLength);
+           }
         }
         tuples.add(tuple);
     }

@@ -33,6 +33,11 @@ public class Tuple {
        values.get(i).setName(name);
     }
     
+    /* Trims the value of AttributeValue at i down to the given max length. */
+    public void trimValue(int i, int maxLength) {
+       values.get(i).setValue(values.get(i).getValue().substring(0,maxLength));
+    }
+     
     /* Adds given AttributeValue to the list of values. */
     public void add(AttributeValue attribute) {
         values.add(attribute);
