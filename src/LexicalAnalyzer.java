@@ -5,7 +5,6 @@ import java.io.IOException;
 public class LexicalAnalyzer {
   
   private SurlyDatabase database;
-  
   /* Constructor to initialize the database. */
   public LexicalAnalyzer() {
     database = new SurlyDatabase();
@@ -51,7 +50,7 @@ public class LexicalAnalyzer {
     String[] words = command.split("\\s+");
     String commandType = words[0];
     switch (commandType) {
-      case "RELATION":
+      case "RELATION": {
       RelationParser relation = new RelationParser(command);
       if (relation.getIsValidSyntax()) {
         Relation r = relation.parseRelation();
@@ -61,7 +60,8 @@ public class LexicalAnalyzer {
       }
       
       break;
-      case "INSERT":
+    }
+      case "INSERT": {
       InsertParser insert = new InsertParser(command);
       if (insert.getIsValidSyntax()) {
         String relationName = insert.parseRelationName();
@@ -74,7 +74,8 @@ public class LexicalAnalyzer {
       }
       
       break;
-      case "PRINT":
+    }
+      case "PRINT":{
       PrintParser print = new PrintParser(command);
       if (print.getIsValidSyntax()) {
         String[] names = print.parseRelationNames();
@@ -86,13 +87,29 @@ public class LexicalAnalyzer {
       }
       
       break;
-      case "DESTORY":
-      DestroyParser destory = new DestroyParser(command);
-      if (destory.getIsValidSyntax()) {
-
+    }
+      case "DESTROY": { 
+      DestroyParser destroy = new DestroyParser(command);
+      String name = destroy.parseRelationName();
+      System.out.println("relation name: " + name);
+      if (destroy.getIsValidSyntax() == true) {
+        if (database.getRelation(name) != null) {
+          database.destroyRelation(name);
+        } else {
+          System.out.println("RELATION NOT FOUND");
+        }
       } else {
         System.out.println("INVALID SYNTAX: " + command);
       }
+      break;
+    }
+      case "DELETE": {
+      DeleteParser delete = new DeleteParser(command);
+      String name = delete.parseRelationName();
+      Relation relationName = new Relation(name);
+      relationName.delete();
+      break;
+    }
       default:
       System.out.println("INVALID COMMAND: " + command);
     }

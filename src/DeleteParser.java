@@ -19,6 +19,6 @@ public class DeleteParser {
     }
 
     public boolean verifySyntax() {
-        return this.input.matches("DESTORY\\s+(\\w+\\s*,\\s*)*\\w+\\s*;");    
+        return this.input.matches("DELETE\\s+(\\w+\\s*,\\s*)*\\w+\\s*;");    
     }
 }

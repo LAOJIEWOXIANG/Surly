@@ -86,5 +86,6 @@ public class Relation {
   
   /* Remove all tuples from the relation */
   public void delete() {
+    tuples.remove();
   }
 }
