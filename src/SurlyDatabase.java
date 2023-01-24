@@ -22,11 +22,16 @@ public class SurlyDatabase {
   
   /* Removes the relation with the specified name from the database */
   public void destroyRelation(String name) {
-    for (Relation r : relations) {
-      if (r.getName().equalsIgnoreCase(name)) {
-        relations.remove(r);
+   //  for (Relation r : relations) {
+   //    if (r.getName().equalsIgnoreCase(name)) {
+   //      relations.remove(r);
+   //    }
+   //  }
+      for (int i = 0; i < relations.size(); i++) {
+         if (relations.get(i).getName().equalsIgnoreCase(name)) {
+            relations.remove(relations.get(i));
+         }
       }
-    }
   }
   
   /* Adds the given relation to the database */
