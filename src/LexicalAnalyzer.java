@@ -54,8 +54,7 @@ public class LexicalAnalyzer {
       case "RELATION":
         RelationParser relation = new RelationParser(command);
         if (relation.getIsValidSyntax()) {
-          System.out.println(
-              "Creating " + relation.parseRelationName() + " with " + relation.parseAttributeCount() + " attributes.");
+           database.createRelation(relation.parseRelation());
         } else {
           System.out.println("INVALID SYNTAX: " + command);
         }

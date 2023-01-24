@@ -14,17 +14,17 @@ public class RelationParser {
 
    /* Parses and returns the number of attributes to create */
     public Relation parseRelation() {
-        String name = input.split("\\s+")[1];
+        String name = input.split("\\s+")[1]; /* Parse relation name */
         Relation relation = new Relation(name);
-        /* Isolates the attribute definitions. */
-        String attr = input.split("\\s+",3)[2].trim();
         
+        /* Isolates the attribute definitions. */
+        String attr = input.split("\\s+",3)[2].trim();  
         /* Need to handle bad parentheses syntax. */
         
         /* Array of individual attribute definitions. */
         String[] attrDef = attr.substring(attr.indexOf("(")+1, attr.length() - 2).split(",");
         
-        /* Array of arrays containing isolated elements of each attribute definition. */    
+        /* Creates attributes with given attribute definitions and adds to relation schema. */   
         for (int i = 0; i < attrDef.length; i++) {
              String[] elements = attrDef[i].trim().split("\\s+"); //can add error checking here later
              /* Ensures attribute definition has exactly 3 elements. */
