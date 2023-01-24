@@ -3,6 +3,14 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class LexicalAnalyzer {
+
+   private SurlyDatabase database;
+   
+   /* Constructor to initialize the database. */
+   public LexicalAnalyzer() {
+      database = new SurlyDatabase();
+   }
+   
   /*
    * Parses the given file into individual commands
    * and passes each to the appropriate parser
@@ -56,8 +64,7 @@ public class LexicalAnalyzer {
       case "INSERT":
         InsertParser insert = new InsertParser(command);
         if (insert.getIsValidSyntax()) {
-          // once we have SurlyDatabase working the command here is
-          // SurlyDatabase.getRelation(insert.parseRelationName()).insert(insert.parseTuple)
+           database.getRelation(insert.parseRelationName()).insert(insert.parseTuple());
           // The Relation.insert(Tuple tuple) function must set the names of the attribute values to
           //  names in the schema. 
         } else {
@@ -68,10 +75,11 @@ public class LexicalAnalyzer {
       case "PRINT":
         PrintParser print = new PrintParser(command);
         if (print.getIsValidSyntax()) {
-          /* for (String relationName: print.parseRelationNames()) {
-                SurlyDatabase.getRelation(relationName).print();
+          String[] names = print.parseRelationNames();
+            for (String relationName: names) {
+                database.getRelation(relationName).print();
              }
-          */
+          
         } else {
           System.out.println("INVALID SYNTAX: " + command);
         }
