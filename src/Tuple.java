@@ -28,6 +28,11 @@ public class Tuple {
        return values.get(i).getValue();
     }
     
+    /* Sets the name of the AttributeValue at index i to the given String. */
+    public void setName(int i, String name) {
+       values.get(i).setName(name);
+    }
+    
     /* Adds given AttributeValue to the list of values. */
     public void add(AttributeValue attribute) {
         values.add(attribute);

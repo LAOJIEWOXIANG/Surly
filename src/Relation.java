@@ -69,6 +69,9 @@ public class Relation {
     
     /* Adds the specified tuple to the relation. */
     public void insert(Tuple tuple) {
+        for (int i = 0; i < schema.size(); i++) {
+           tuple.setName(i,schema.get(i).getName());
+        }
         tuples.add(tuple);
     }
     
