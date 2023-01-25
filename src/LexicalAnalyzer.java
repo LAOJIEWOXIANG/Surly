@@ -80,7 +80,9 @@ public class LexicalAnalyzer {
       if (print.getIsValidSyntax()) {
         String[] names = print.parseRelationNames();
         for (String relationName: names) {
-          database.getRelation(relationName).print();
+          if (database.getRelation(relationName) != null) {
+            database.getRelation(relationName).print();
+          }
         }
       } else {
         System.out.println("INVALID SYNTAX: " + command);
@@ -91,7 +93,6 @@ public class LexicalAnalyzer {
       case "DESTROY": { 
       DestroyParser destroy = new DestroyParser(command);
       String name = destroy.parseRelationName();
-      System.out.println("relation name: " + name);
       if (destroy.getIsValidSyntax() == true) {
         if (database.getRelation(name) != null) {
           database.destroyRelation(name);
