@@ -7,7 +7,7 @@ public class LexicalAnalyzer {
   private SurlyDatabase database;
   /* Constructor to initialize the database. */
   public LexicalAnalyzer() {
-    database = new SurlyDatabase();
+    this.database = new SurlyDatabase();
   }
   
   /*
@@ -54,9 +54,9 @@ public class LexicalAnalyzer {
       RelationParser relation = new RelationParser(command);
       String relationName = relation.parseRelationName();
       if (relation.getIsValidSyntax()) {
-        if (database.getRelation(relationName) == null) {
+        if (this.database.getRelation(relationName) == null) {
            Relation r = relation.parseRelation();
-           database.createRelation(r);
+           this.database.createRelation(r);
         } 
       } else {
         System.out.println("INVALID SYNTAX: " + command);
@@ -68,8 +68,9 @@ public class LexicalAnalyzer {
       if (insert.getIsValidSyntax()) {
         String relationName = insert.parseRelationName();
         Tuple tuple = insert.parseTuple();
-        if (database.getRelation(relationName) != null) {
-          database.getRelation(relationName).insert(tuple);
+        Relation currentRelation = this.database.getRelation(relationName);
+        if (currentRelation != null) {
+          currentRelation.insert(tuple);
         } else {
           System.out.print("ERROR INSERTING TO RELATION \"" + relationName + "\": ");
           System.out.println("RELATION NOT FOUND.");
@@ -84,8 +85,9 @@ public class LexicalAnalyzer {
       if (print.getIsValidSyntax()) {
         String[] names = print.parseRelationNames();
         for (String relationName: names) {
-          if (database.getRelation(relationName) != null) {
-            database.getRelation(relationName).print();
+          Relation currentRelation = this.database.getRelation(relationName);
+          if (currentRelation != null) {
+            currentRelation.print();
             System.out.println();
           } else {
             System.out.print("ERROR PRINTING RELATION \"" + relationName + "\": ");
@@ -102,8 +104,8 @@ public class LexicalAnalyzer {
       DestroyParser destroy = new DestroyParser(command);
       String relationName = destroy.parseRelationName();
       if (destroy.getIsValidSyntax() == true) {
-        if (database.getRelation(relationName) != null) {
-          database.destroyRelation(relationName);
+        if (this.database.getRelation(relationName) != null) {
+          this.database.destroyRelation(relationName);
         } else {
           System.out.print("ERROR DESTROYING RELATION \"" + relationName + "\": ");
           System.out.println("RELATION NOT FOUND.");

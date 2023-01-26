@@ -6,7 +6,7 @@ public class Tuple {
   
   /* Constructor to initialize the linked list */
   public Tuple() {
-    values = new LinkedList<>();
+    this.values = new LinkedList<>();
   }
   
   /* Returns the value of the specified attribute, or returns null
@@ -15,9 +15,10 @@ public class Tuple {
     
     /* If the name of the AttributeValue at i equals the given name,
     returns the value of the AttributeValue. */
-    for (int i = 0; i < values.size(); i++) {
-      if (values.get(i).getName().equalsIgnoreCase(attributeName)) {
-        return values.get(i).getValue();
+    for (int i = 0; i < this.values.size(); i++) {
+      AttributeValue currentAttributeValue = this.values.get(i);
+      if (currentAttributeValue.getName().equalsIgnoreCase(attributeName)) {
+        return currentAttributeValue.getValue();
       }
     }
     return null;
@@ -25,21 +26,24 @@ public class Tuple {
   
   /* Returns the value of the attribute at index i in the tuple. */
   public String getValue(int i) {
-    return values.get(i).getValue();
+    return this.values.get(i).getValue();
   }
   
   /* Sets the name of the AttributeValue at index i to the given String. */
   public void setName(int i, String name) {
-    values.get(i).setName(name);
+    this.values.get(i).setName(name);
   }
   
   /* Trims the value of AttributeValue at i down to the given max length. */
   public void trimValue(int i, int maxLength) {
-    values.get(i).setValue(values.get(i).getValue().substring(0,maxLength));
+    AttributeValue currentAttributeValue = this.values.get(i);
+    currentAttributeValue.setValue(
+      currentAttributeValue.getValue().substring(0,maxLength)
+    );
   }
   
   /* Adds given AttributeValue to the list of values. */
   public void add(AttributeValue attribute) {
-    values.add(attribute);
+    this.values.add(attribute);
   }
 }
