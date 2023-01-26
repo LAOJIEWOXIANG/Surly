@@ -69,11 +69,10 @@ public class LexicalAnalyzer {
         String relationName = insert.parseRelationName();
         Tuple tuple = insert.parseTuple();
         if (database.getRelation(relationName) != null) {
-        database.getRelation(relationName).insert(tuple);
-        // The Relation.insert(Tuple tuple) function must set the names of the attribute values to
-        //  names in the schema.
+          database.getRelation(relationName).insert(tuple);
         } else {
-          System.out.println("RELATION " + relationName + "NOT FOUND");
+          System.out.print("ERROR INSERTING TO RELATION \"" + relationName + "\": ");
+          System.out.println("RELATION NOT FOUND.");
         }
       } else {
         System.out.println("INVALID SYNTAX: " + command);
@@ -88,6 +87,9 @@ public class LexicalAnalyzer {
           if (database.getRelation(relationName) != null) {
             database.getRelation(relationName).print();
             System.out.println();
+          } else {
+            System.out.print("ERROR PRINTING RELATION \"" + relationName + "\": ");
+            System.out.println("RELATION NOT FOUND.");
           }
         }
       } else {
@@ -98,12 +100,13 @@ public class LexicalAnalyzer {
     }
       case "DESTROY": { 
       DestroyParser destroy = new DestroyParser(command);
-      String name = destroy.parseRelationName();
+      String relationName = destroy.parseRelationName();
       if (destroy.getIsValidSyntax() == true) {
-        if (database.getRelation(name) != null) {
-          database.destroyRelation(name);
+        if (database.getRelation(relationName) != null) {
+          database.destroyRelation(relationName);
         } else {
-          System.out.println("RELATION NOT FOUND");
+          System.out.print("ERROR DESTROYING RELATION \"" + relationName + "\": ");
+          System.out.println("RELATION NOT FOUND.");
         }
       } else {
         System.out.println("INVALID SYNTAX: " + command);
@@ -113,9 +116,14 @@ public class LexicalAnalyzer {
       case "DELETE": {
       DeleteParser delete = new DeleteParser(command);
       if (delete.getIsValidSyntax()) {
-        String name = delete.parseRelationName();
-        Relation relationName = new Relation(name);
-        relationName.delete();
+        String relationName = delete.parseRelationName();
+        if (database.getRelation(relationName) != null) {
+           Relation relation = new Relation(relationName);
+           relation.delete();
+        } else {
+          System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
+          System.out.println("RELATION NOT FOUND.");
+        }
       } else {
         System.out.println("INVALID SYNTAX: " + command);
       }
