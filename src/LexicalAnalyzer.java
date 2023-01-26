@@ -130,7 +130,9 @@ public class LexicalAnalyzer {
       break;
     }
       default:
-      System.out.println("INVALID COMMAND: " + command);
+      if (!command.equals("")) {
+         System.out.println("INVALID COMMAND: " + command);
+      }
     }
   }
   
