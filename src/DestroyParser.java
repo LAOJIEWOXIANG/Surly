@@ -10,11 +10,11 @@ public class DestroyParser {
 	}
 
     public boolean getIsValidSyntax() {
-        return isValidSyntax;
+        return this.isValidSyntax;
     }
     /* Parses and returns the name of the relation to destroy */
     public String parseRelationName() {
-        String name = input.split(" ")[1];
+        String name = this.input.split(" ")[1];
         return name.substring(0, name.length() - 1);
     }
 

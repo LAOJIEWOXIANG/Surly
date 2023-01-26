@@ -15,7 +15,7 @@ public class DeleteParser {
     }
 
     public boolean getIsValidSyntax() {
-        return isValidSyntax;
+        return this.isValidSyntax;
     }
 
     public boolean verifySyntax() {

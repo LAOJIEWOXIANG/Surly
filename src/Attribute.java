@@ -14,17 +14,17 @@ public class Attribute {
   
   /* Accessor method for name. */
   public String getName() {
-    return name;
+    return this.name;
   }
   
   /* Accessor method for dataType. */
   public String getDataType() {
-    return dataType;
+    return this.dataType;
   }
   
   /* Accessor method for length. */
   public int getLength() {
-    return length;
+    return this.length;
   }
   
   /* Sets name to the given String. */
