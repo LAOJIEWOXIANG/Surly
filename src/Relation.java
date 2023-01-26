@@ -17,7 +17,6 @@ public class Relation {
     /* Calculates how much space each element needs in the table. */
     int[] lengths = new int[schema.size()];
     int totalLength = 0;
-    //TODO: fix crash when a relation has 0 attributes
     for (int i = 0; i < schema.size(); i++) {
       Attribute a = schema.get(i);
       /* Gets the size of the attribute's max length or the

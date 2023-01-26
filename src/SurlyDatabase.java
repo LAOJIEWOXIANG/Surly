@@ -4,16 +4,17 @@ public class SurlyDatabase {
   /* Collection of relations in the database */
   private LinkedList<Relation> relations;
   private Relation catalog;
+  private final Integer CATALOG_ATTRIBUTE_LENGTH = 16;
   
   /* Constructor to initialize LinkedList of relations. */
   public SurlyDatabase() {
     this.relations = new LinkedList<>();
     this.catalog = new Relation("CATALOG");
     this.catalog.addToSchema(
-      new Attribute("RELATION", "CHAR", 16)
+      new Attribute("RELATION", "CHAR", CATALOG_ATTRIBUTE_LENGTH)
     );
     this.catalog.addToSchema(
-      new Attribute("ATTRIBUTES", "NUM", 16)
+      new Attribute("ATTRIBUTES", "NUM", CATALOG_ATTRIBUTE_LENGTH)
     );
     createRelation(this.catalog);
   }
