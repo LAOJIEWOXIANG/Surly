@@ -85,6 +85,7 @@ public class LexicalAnalyzer {
         for (String relationName: names) {
           if (database.getRelation(relationName) != null) {
             database.getRelation(relationName).print();
+            System.out.println();
           }
         }
       } else {
