@@ -12,9 +12,14 @@ public class RelationParser {
     
   }
   
+  /* Returns the name of the relation. */
+  public String parseRelationName() {
+     return this.input.split("\\s+")[1];
+  }
+  
   /* Parses and returns the number of attributes to create */
   public Relation parseRelation() {
-    String name = input.split("\\s+")[1]; /* Parse relation name */
+    String name = this.parseRelationName(); /* Parse relation name */
     Relation relation = new Relation(name);
     
     /* Isolates the attribute definitions. */

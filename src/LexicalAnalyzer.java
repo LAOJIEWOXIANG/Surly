@@ -52,13 +52,15 @@ public class LexicalAnalyzer {
     switch (commandType) {
       case "RELATION": {
       RelationParser relation = new RelationParser(command);
+      String relationName = relation.parseRelationName();
       if (relation.getIsValidSyntax()) {
-        Relation r = relation.parseRelation();
-        database.createRelation(r);
+        if (database.getRelation(relationName) == null) {
+           Relation r = relation.parseRelation();
+           database.createRelation(r);
+        } 
       } else {
         System.out.println("INVALID SYNTAX: " + command);
-      }
-      
+      }     
       break;
     }
       case "INSERT": {
