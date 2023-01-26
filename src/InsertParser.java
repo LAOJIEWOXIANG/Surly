@@ -17,23 +17,7 @@ public class InsertParser {
     return words[1];
   }
   
-  /* Parses and returns the number of attributes to insert
-  public int parseAttributeCount() {
-  String command = removeSemicolon(this.input);
-  /*
-  * The string is first split using the regular expression \\s+ which matches one
-  * or more whitespace characters. Then, the resulting substrings are further
-  * split by the regular expression (?=([^']*'[^']*')*[^']*$), which ensures that
-  * the split only happens if the whitespace character is not enclosed within
-  * single quotes.
-  
-  String[] parts = command.split("\\s+(?=([^']*'[^']*')*[^']*$)");
-  String[] attributes = new String[parts.length - 2];
-  System.arraycopy(parts, 2, attributes, 0, parts.length - 2);
-  attributes = Arrays.stream(attributes).map(String::trim).toArray(String[]::new);
-  
-  return attributes.length;
-  } */
+  /* Parses and returns a tuple based on a command.*/
   
   public Tuple parseTuple() {
     String attributes = input.substring(0,input.length() - 1); //remove semicolon
