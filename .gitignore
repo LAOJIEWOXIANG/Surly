@@ -1,5 +1,5 @@
 
 .DS_Store
 *.class
-test.txt
-input.txt
+*.txt
+.vscode/*
