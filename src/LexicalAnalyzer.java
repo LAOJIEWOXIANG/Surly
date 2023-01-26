@@ -66,13 +66,16 @@ public class LexicalAnalyzer {
       if (insert.getIsValidSyntax()) {
         String relationName = insert.parseRelationName();
         Tuple tuple = insert.parseTuple();
+        if (database.getRelation(relationName) != null) {
         database.getRelation(relationName).insert(tuple);
         // The Relation.insert(Tuple tuple) function must set the names of the attribute values to
         //  names in the schema.
+        } else {
+          System.out.println("RELATION " + relationName + "NOT FOUND");
+        }
       } else {
         System.out.println("INVALID SYNTAX: " + command);
       }
-      
       break;
     }
       case "PRINT":{
@@ -106,9 +109,13 @@ public class LexicalAnalyzer {
     }
       case "DELETE": {
       DeleteParser delete = new DeleteParser(command);
-      String name = delete.parseRelationName();
-      Relation relationName = new Relation(name);
-      relationName.delete();
+      if (delete.getIsValidSyntax()) {
+        String name = delete.parseRelationName();
+        Relation relationName = new Relation(name);
+        relationName.delete();
+      } else {
+        System.out.println("INVALID SYNTAX: " + command);
+      }
       break;
     }
       default:
