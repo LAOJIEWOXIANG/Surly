@@ -17,6 +17,7 @@ public class Relation {
     /* Calculates how much space each element needs in the table. */
     int[] lengths = new int[schema.size()];
     int totalLength = 0;
+    //TODO: fix crash when a relation has 0 attributes
     for (int i = 0; i < schema.size(); i++) {
       Attribute a = schema.get(i);
       /* Gets the size of the attribute's max length or the
@@ -78,6 +79,19 @@ public class Relation {
     }
     tuples.add(tuple);
   }
+
+  /* Deletes a tuple from the linked list by the name of its first attribute*/
+  public boolean deletetuple(String name) {
+    Boolean deleted = false;
+    for (int i = 0; i < this.tuples.size(); i++) {
+      Tuple currentTuple = this.tuples.get(i);
+      if (currentTuple.getValue(0).equalsIgnoreCase(name)) {
+        this.tuples.remove(i);
+        deleted = true;
+      }
+    }
+    return deleted;
+  }
   
   /* Adds specified attribute to the schema. */
   public void addToSchema(Attribute attribute) {
@@ -87,5 +101,9 @@ public class Relation {
   /* Remove all tuples from the relation */
   public void delete() {
     tuples.remove();
+  }
+
+  public Integer schemaSize() {
+    return this.schema.size();
   }
 }
