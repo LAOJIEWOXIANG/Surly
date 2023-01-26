@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class InsertParser {
   /* Reference to the input string being parsed */
   private String input;
@@ -20,7 +18,7 @@ public class InsertParser {
   /* Parses and returns a tuple based on a command.*/
   
   public Tuple parseTuple() {
-    String attributes = input.substring(0,input.length() - 1); //remove semicolon
+    String attributes = removeSemicolon(this.input);
     attributes = attributes.split("\\s+",3)[2]; //get only attribute values
     Tuple tuple = new Tuple();
     for (int i = 0; i < attributes.length(); i++) {

@@ -12,12 +12,12 @@ public class AttributeValue {
   
   /* Accessor method for name. */
   public String getName() {
-    return name;
+    return this.name;
   }
   
   /* Accessor method for value. */
   public String getValue() {
-    return value;
+    return this.value;
   }
   
   /* Sets name to the given String. */

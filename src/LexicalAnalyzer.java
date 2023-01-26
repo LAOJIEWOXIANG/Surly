@@ -7,7 +7,7 @@ public class LexicalAnalyzer {
   private SurlyDatabase database;
   /* Constructor to initialize the database. */
   public LexicalAnalyzer() {
-    database = new SurlyDatabase();
+    this.database = new SurlyDatabase();
   }
   
   /*
@@ -54,7 +54,7 @@ public class LexicalAnalyzer {
       RelationParser relation = new RelationParser(command);
       if (relation.getIsValidSyntax()) {
         Relation r = relation.parseRelation();
-        database.createRelation(r);
+        this.database.createRelation(r);
       } else {
         System.out.println("INVALID SYNTAX: " + command);
       }
@@ -66,8 +66,9 @@ public class LexicalAnalyzer {
       if (insert.getIsValidSyntax()) {
         String relationName = insert.parseRelationName();
         Tuple tuple = insert.parseTuple();
-        if (database.getRelation(relationName) != null) {
-        database.getRelation(relationName).insert(tuple);
+        Relation currentRelation = this.database.getRelation(relationName);
+        if (currentRelation != null) {
+          currentRelation.insert(tuple);
         // The Relation.insert(Tuple tuple) function must set the names of the attribute values to
         //  names in the schema.
         } else {
@@ -83,8 +84,9 @@ public class LexicalAnalyzer {
       if (print.getIsValidSyntax()) {
         String[] names = print.parseRelationNames();
         for (String relationName: names) {
-          if (database.getRelation(relationName) != null) {
-            database.getRelation(relationName).print();
+          Relation currentRelation = this.database.getRelation(relationName);
+          if (currentRelation != null) {
+            currentRelation.print();
           }
         }
       } else {
@@ -97,8 +99,8 @@ public class LexicalAnalyzer {
       DestroyParser destroy = new DestroyParser(command);
       String name = destroy.parseRelationName();
       if (destroy.getIsValidSyntax() == true) {
-        if (database.getRelation(name) != null) {
-          database.destroyRelation(name);
+        if (this.database.getRelation(name) != null) {
+          this.database.destroyRelation(name);
         } else {
           System.out.println("RELATION NOT FOUND");
         }
