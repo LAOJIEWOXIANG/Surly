@@ -73,12 +73,53 @@ public class Relation {
     for (int i = 0; i < this.schema.size(); i++) {
       Attribute currentSchema = this.schema.get(i);
       tuple.setName(i,currentSchema.getName());
+      // check if the datatype of currentschema matches with tuple's datatype
+      if (currentSchema.getDataType().equalsIgnoreCase("CHAR")) {
+        if (isChar(tuple.getValue(i))) {
+          continue;
+        } else {
+          System.out.println("Tuple datatype not match with CHAR");
+        }
+      } else if (currentSchema.getDataType().equalsIgnoreCase("NUM")) {
+        if (isNumeric(tuple.getValue(i))) {
+          continue;
+        } else {
+          System.out.println("Tuple datatype not match with NUM");
+        }
+      } else {
+        System.out.println(currentSchema.getName() + "has invalid datatype.");
+      }
       int maxLength = currentSchema.getLength();
       if (tuple.getValue(i).length() > maxLength) {
         tuple.trimValue(i, maxLength);
       }
     }
     this.tuples.add(tuple);
+  }
+
+  /* check if str is char */
+  public boolean isChar(String str) {
+    for (int i = 0; i < str.length(); i++) {
+      if (Character.isDigit(str.charAt(i))) {
+        continue;
+      } else {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /* check if str is numeric */
+  public boolean isNumeric(String str) {
+    if (str == null) {
+      return false;
+    }
+    try {
+        Integer d = Integer.parseInt(strNum);
+    } catch (NumberFormatException nfe) {
+        return false;
+    } 
+    return true;
   }
 
   /* Deletes a tuple from the linked list by the name of its first attribute*/
