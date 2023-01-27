@@ -28,7 +28,7 @@ public class InsertParser {
         i++;
         String betweenQuotes = "";
         while (attributes.charAt(i) != 39) {
-          betweenQuotes+= attributes.charAt(i);
+          betweenQuotes += attributes.charAt(i);
           i++;
         }
         tuple.add(new AttributeValue("",betweenQuotes));
