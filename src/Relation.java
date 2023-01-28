@@ -70,31 +70,28 @@ public class Relation {
   
   /* Adds the specified tuple to the relation. */
   public void insert(Tuple tuple) {
-    for (int i = 0; i < this.schema.size(); i++) {
-      Attribute currentSchema = this.schema.get(i);
-      tuple.setName(i,currentSchema.getName());
-      // check if the datatype of currentschema matches with tuple's datatype
-      if (currentSchema.getDataType().equalsIgnoreCase("CHAR")) {
-        if (isChar(tuple.getValue(i))) {
-          continue;
-        } else {
-          System.out.println("Tuple datatype not match with CHAR");
+    if (tuple.length() == schema.size()) {
+      for (int i = 0; i < this.schema.size(); i++) {
+        Attribute currentSchema = this.schema.get(i);
+        tuple.setName(i,currentSchema.getName());
+        // check if the datatype of currentschema matches with tuple's datatype
+        String datatype = currentSchema.getDataType();
+        if (datatype.equalsIgnoreCase("NUM") && !isNumeric(tuple.getValue(i))) {
+           System.out.println("Invalid data type for attribute \"" 
+                              + currentSchema.getName() + "\" (given: \""
+                              + tuple.getValue(i) + "\" expected: NUM).");
+           return;
         }
-      } else if (currentSchema.getDataType().equalsIgnoreCase("NUM")) {
-        if (isNumeric(tuple.getValue(i))) {
-          continue;
-        } else {
-          System.out.println("Tuple datatype not match with NUM");
+        int maxLength = currentSchema.getLength();
+        if (tuple.getValue(i).length() > maxLength) {
+          tuple.trimValue(i, maxLength);
         }
-      } else {
-        System.out.println(currentSchema.getName() + "has invalid datatype.");
       }
-      int maxLength = currentSchema.getLength();
-      if (tuple.getValue(i).length() > maxLength) {
-        tuple.trimValue(i, maxLength);
-      }
+      this.tuples.add(tuple);
+    } else {
+      System.out.println("Error inserting to relation \"" + this.name + "\"" +
+                         " (tuple length does not match schema length).");
     }
-    this.tuples.add(tuple);
   }
 
   /* check if str is char */
@@ -115,7 +112,7 @@ public class Relation {
       return false;
     }
     try {
-        Integer d = Integer.parseInt(strNum);
+        Integer d = Integer.parseInt(str);
     } catch (NumberFormatException nfe) {
         return false;
     } 
