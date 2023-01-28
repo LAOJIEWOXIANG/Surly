@@ -74,20 +74,9 @@ public class Relation {
       Attribute currentSchema = this.schema.get(i);
       tuple.setName(i,currentSchema.getName());
       // check if the datatype of currentschema matches with tuple's datatype
-      if (currentSchema.getDataType().equalsIgnoreCase("CHAR")) {
-        if (isChar(tuple.getValue(i))) {
-          continue;
-        } else {
-          System.out.println("Tuple datatype not match with CHAR");
-        }
-      } else if (currentSchema.getDataType().equalsIgnoreCase("NUM")) {
-        if (isNumeric(tuple.getValue(i))) {
-          continue;
-        } else {
-          System.out.println("Tuple datatype not match with NUM");
-        }
-      } else {
-        System.out.println(currentSchema.getName() + "has invalid datatype.");
+      String datatype = currentSchema.getDataType();
+      if (datatype.equalsIgnoreCase("NUM") && !isNumeric(tuple.getValue(i))) {
+         System.out.println("Tuple datatype not match with NUM"); 
       }
       int maxLength = currentSchema.getLength();
       if (tuple.getValue(i).length() > maxLength) {
@@ -115,7 +104,7 @@ public class Relation {
       return false;
     }
     try {
-        Integer d = Integer.parseInt(strNum);
+        Integer d = Integer.parseInt(str);
     } catch (NumberFormatException nfe) {
         return false;
     } 
