@@ -17,7 +17,7 @@ public class RelationParser {
      return this.input.split("\\s+")[1];
   }
   
-  /* Parses and returns the number of attributes to create */
+  /* Parses and returns a Relation with the given attributes. */
   public Relation parseRelation() {
     String name = this.parseRelationName(); /* Parse relation name */
     Relation relation = new Relation(name);
@@ -35,6 +35,10 @@ public class RelationParser {
       /* Ensures attribute definition has exactly 3 elements. */
       if (elements.length != 3) {
         System.out.println("Invalid attribute length.");
+        return null;
+      }
+      if (!elements[1].equals("CHAR") && !elements[1].equals("NUM")) {
+        System.out.println("Invalid attribute datatype: \"" + elements[1] + "\"");
         return null;
       }
       relation.addToSchema(new Attribute(elements[0],elements[1],Integer.valueOf(elements[2])));
