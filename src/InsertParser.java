@@ -15,30 +15,30 @@ public class InsertParser {
     return words[1];
   }
   
-  /* Parses and returns a tuple based on a command.*/
-  
+  /* Parses and returns a tuple based on a command.*/ 
   public Tuple parseTuple() {
-    String attributes = removeSemicolon(this.input);
-    attributes = attributes.split("\\s+",3)[2]; //get only attribute values
+    String attributeValues = removeSemicolon(this.input);
+    attributeValues = attributeValues.split("\\s+",3)[2]; /* Isolate attribute values. */
     Tuple tuple = new Tuple();
-    for (int i = 0; i < attributes.length(); i++) {
+    for (int i = 0; i < attributeValues.length(); i++) {
+    
       /* If the current char is a single quote, add everything
       inside it to the tuple. */
-      if (attributes.charAt(i) == 39) {
+      if (attributeValues.charAt(i) == 39) {
         i++;
         String betweenQuotes = "";
-        while (attributes.charAt(i) != 39) {
-          betweenQuotes += attributes.charAt(i);
+        while (attributeValues.charAt(i) != 39) {
+          betweenQuotes += attributeValues.charAt(i);
           i++;
         }
         tuple.add(new AttributeValue("",betweenQuotes));
         
         /* If the current char isn't a space, read until a space
         and add that string to the tuple. */
-      } else if (attributes.charAt(i) != ' ') {
+      } else if (attributeValues.charAt(i) != ' ') {
         String element = "";
-        while (i < attributes.length() && attributes.charAt(i) != ' ') {
-          element += attributes.charAt(i);
+        while (i < attributeValues.length() && attributeValues.charAt(i) != ' ') {
+          element += attributeValues.charAt(i);
           i++;
         }
         tuple.add(new AttributeValue("",element));
@@ -61,6 +61,7 @@ public class InsertParser {
     return this.input.matches("INSERT\\s+\\w+\\s+(\\S+)\\s*((\\s+(\\S+))*)\\s*;");
   }
   
+  /* Removes semicolon from end of given String and returns it. */
   private String removeSemicolon(String input) {
     if (input.endsWith(";")) {
       input = input.substring(0, input.length() - 1);

@@ -8,7 +8,7 @@ public class SurlyDatabase {
   private final String RELATION_NAME_COLUMN = "RELATION";
   private final String SCHEMA_LENGTH_COLUMN = "ATTRIBUTES";
   
-  /* Constructor to initialize LinkedList of relations. */
+  /* Constructor to initialize LinkedList of relations and create catalog. */
   public SurlyDatabase() {
     this.relations = new LinkedList<>();
     this.catalog = new Relation("CATALOG");
@@ -50,7 +50,8 @@ public class SurlyDatabase {
       addRelationToCatalog(relation);
     }
   }
-
+  
+  /* Accessor method for CATALOG. */
   public Relation getCatalog(){
     return this.catalog;
   }

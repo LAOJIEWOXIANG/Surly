@@ -38,7 +38,7 @@ public class Tuple {
   public void trimValue(int i, int maxLength) {
     AttributeValue currentAttributeValue = this.values.get(i);
     currentAttributeValue.setValue(
-      currentAttributeValue.getValue().substring(0,maxLength));
+    currentAttributeValue.getValue().substring(0,maxLength));
   }
   
   /* Returns the number of AttributeValues in the tuple. */
