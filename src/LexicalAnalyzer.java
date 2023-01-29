@@ -47,101 +47,126 @@ public class LexicalAnalyzer {
   private void processCommand(String command) {
     command = dropComment(command);
     command = command.trim();
-    String[] words = command.split("\\s+");
-    String commandType = words[0];
+    String commandType = command.split("\\s+",2)[0];
     switch (commandType) {
       case "RELATION": {
-      RelationParser relationParser = new RelationParser(command);
-      String relationName = relationParser.parseRelationName();
-      if (relationParser.getIsValidSyntax()) {
-        if (this.database.getRelation(relationName) == null) {
-           Relation newRelation = relationParser.parseRelation();
-           if (newRelation != null) {
-              this.database.createRelation(newRelation);
-           }
-        } 
-      } else {
-        System.out.println("INVALID SYNTAX: " + command);
-      }     
+      handleRelation(command);       
       break;
     }
       case "INSERT": {
-      InsertParser insert = new InsertParser(command);
-      if (insert.getIsValidSyntax()) {
-        String relationName = insert.parseRelationName();
-        if (relationName.equalsIgnoreCase("CATALOG")) {
-           System.out.println("ERROR INSERTING TO RELATION: CANNOT INSERT TO "
-                              + "CATALOG.");
-           break;
-        }
-        Tuple tuple = insert.parseTuple();
-        Relation currentRelation = this.database.getRelation(relationName);
-        if (currentRelation != null) {
-          currentRelation.insert(tuple);
-        } else {
-          System.out.print("ERROR INSERTING TO RELATION \"" + relationName + "\": ");
-          System.out.println("RELATION NOT FOUND.");
-        }
-      } else {
-        System.out.println("INVALID SYNTAX: " + command);
-      }
+      handleInsert(command);
       break;
     }
       case "PRINT":{
-      PrintParser print = new PrintParser(command);
-      if (print.getIsValidSyntax()) {
-        String[] names = print.parseRelationNames();
-        for (String relationName: names) {
-          Relation currentRelation = this.database.getRelation(relationName);
-          if (currentRelation != null) {
-            currentRelation.print();
-            System.out.println();
-          } else {
-            System.out.print("ERROR PRINTING RELATION \"" + relationName + "\": ");
-            System.out.println("RELATION NOT FOUND.");
-          }
-        }
-      } else {
-        System.out.println("INVALID SYNTAX: " + command);
-      }
-      
+      handlePrint(command);
+            
       break;
     }
       case "DESTROY": { 
-      DestroyParser destroy = new DestroyParser(command);
-      String relationName = destroy.parseRelationName();
-      if (destroy.getIsValidSyntax() == true) {
-        if (this.database.getRelation(relationName) != null) {
-          this.database.destroyRelation(relationName);
-        } else {
-          System.out.print("ERROR DESTROYING RELATION \"" + relationName + "\": ");
-          System.out.println("RELATION NOT FOUND.");
-        }
-      } else {
-        System.out.println("INVALID SYNTAX: " + command);
-      }
+      handleDestroy(command);
       break;
     }
       case "DELETE": {
-      DeleteParser delete = new DeleteParser(command);
-      if (delete.getIsValidSyntax()) {
-        String relationName = delete.parseRelationName();
-        Relation relationToDelete = database.getRelation(relationName);
-        if (relationToDelete != null) {
-          relationToDelete.delete();
-        } else {
-          System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
-          System.out.println("RELATION NOT FOUND.");
-        }
-      } else {
-        System.out.println("INVALID SYNTAX: " + command);
-      }
+      handleDelete(command);
       break;
     }
       default:
       if (!command.equals("")) {
          System.out.println("INVALID COMMAND: " + command);
       }
+    }
+  }
+  
+  
+  /* Processes a RELATION command by passing it to the relation parser. */
+  private void handleRelation(String command) {
+    RelationParser relationParser = new RelationParser(command);
+    String relationName = relationParser.parseRelationName();
+    if (relationParser.getIsValidSyntax()) {
+      if (this.database.getRelation(relationName) == null) {
+         Relation newRelation = relationParser.parseRelation();
+         if (newRelation != null) {
+            this.database.createRelation(newRelation);
+         }
+      } 
+    } else {
+      System.out.println("INVALID SYNTAX: " + command);
+    }   
+  }
+  
+  /* Processes an INSERT command by passing it to the insert parser. */
+  private void handleInsert(String command) {
+    InsertParser insert = new InsertParser(command);
+    if (insert.getIsValidSyntax()) {
+      String relationName = insert.parseRelationName();
+      if (relationName.equalsIgnoreCase("CATALOG")) {
+        System.out.println("ERROR INSERTING TO RELATION: CANNOT INSERT TO "
+                          + "CATALOG.");
+        return;
+      }
+      Tuple tuple = insert.parseTuple();
+      Relation currentRelation = this.database.getRelation(relationName);
+      if (currentRelation != null) {
+        currentRelation.insert(tuple);
+      } else {
+        System.out.print("ERROR INSERTING TO RELATION \"" + relationName + "\": ");
+        System.out.println("RELATION NOT FOUND.");
+      }
+    } else {
+        System.out.println("INVALID SYNTAX: " + command);
+      }
+  }
+  
+  /* Processes a PRINT command by passing it to the print parser. */
+  private void handlePrint(String command) {
+    PrintParser print = new PrintParser(command);
+    if (print.getIsValidSyntax()) {
+      String[] names = print.parseRelationNames();
+      for (String relationName: names) {
+        Relation currentRelation = this.database.getRelation(relationName);
+        if (currentRelation != null) {
+          currentRelation.print();
+          System.out.println();
+        } else {
+          System.out.print("ERROR PRINTING RELATION \"" + relationName + "\": ");
+          System.out.println("RELATION NOT FOUND.");
+        }
+      }
+    } else {
+      System.out.println("INVALID SYNTAX: " + command);
+    }
+  }
+  
+  /* Processes a DELETE command by passing it to the delete parser. */
+  private void handleDelete(String command) {
+    DeleteParser delete = new DeleteParser(command);
+    if (delete.getIsValidSyntax()) {
+      String relationName = delete.parseRelationName();
+      Relation relationToDelete = database.getRelation(relationName);
+      if (relationToDelete != null) {
+        relationToDelete.delete();
+      } else {
+        System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
+        System.out.println("RELATION NOT FOUND.");
+      }
+    } else {
+      System.out.println("INVALID SYNTAX: " + command);
+    }
+  }  
+  
+  /* Processes a DESTROY command by passing it to the destroy parser. */
+  private void handleDestroy(String command) {
+    DestroyParser destroy = new DestroyParser(command);
+    String relationName = destroy.parseRelationName();
+    if (destroy.getIsValidSyntax() == true) {
+      if (this.database.getRelation(relationName) != null) {
+        this.database.destroyRelation(relationName);
+      } else {
+        System.out.print("ERROR DESTROYING RELATION \"" + relationName + "\": ");
+        System.out.println("RELATION NOT FOUND.");
+      }
+    } else {
+      System.out.println("INVALID SYNTAX: " + command);
     }
   }
   

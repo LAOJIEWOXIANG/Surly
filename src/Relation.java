@@ -116,7 +116,7 @@ public class Relation {
   }
 
   /* Deletes a tuple from the linked list by the name of its first attribute. */
-  public boolean deletetuple(String name) {
+  public boolean deleteTuple(String name) {
     Boolean isDeleted = false;
     for (int i = 0; i < this.tuples.size(); i++) {
       Tuple currentTuple = this.tuples.get(i);
