@@ -69,6 +69,11 @@ public class LexicalAnalyzer {
       InsertParser insert = new InsertParser(command);
       if (insert.getIsValidSyntax()) {
         String relationName = insert.parseRelationName();
+        if (relationName.equalsIgnoreCase("CATALOG")) {
+           System.out.println("ERROR INSERTING TO RELATION: CANNOT INSERT TO "
+                              + "CATALOG.");
+           break;
+        }
         Tuple tuple = insert.parseTuple();
         Relation currentRelation = this.database.getRelation(relationName);
         if (currentRelation != null) {

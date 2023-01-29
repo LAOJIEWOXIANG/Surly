@@ -120,8 +120,8 @@ public class Relation {
     return true;
   }
 
-  /* Deletes a tuple from the linked list by the name of its first attribute*/
-  public boolean deletetuple(String name) {
+  /* Deletes a tuple from the linked list by the name of its first attribute. */
+  public boolean deleteTuple(String name) {
     Boolean deleted = false;
     for (int i = 0; i < this.tuples.size(); i++) {
       Tuple currentTuple = this.tuples.get(i);
@@ -144,7 +144,8 @@ public class Relation {
       System.out.println("Relation is already empty");
     } else {
       if (this.name.equalsIgnoreCase(CATALOG_NAME)) {
-        System.out.println("Cannot delete from the Catalog.");
+        System.out.println("ERROR DELETING FROM RELATION: CANNOT DELETE FROM "
+                              + "CATALOG.");
       } else {
         this.tuples.clear();
       }
