@@ -121,9 +121,9 @@ public class LexicalAnalyzer {
       DeleteParser delete = new DeleteParser(command);
       if (delete.getIsValidSyntax()) {
         String relationName = delete.parseRelationName();
-        if (database.getRelation(relationName) != null) {
-           Relation relation = new Relation(relationName);
-           relation.delete();
+        Relation relationToDelete = database.getRelation(relationName);
+        if (relationToDelete != null) {
+          relationToDelete.delete();
         } else {
           System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
           System.out.println("RELATION NOT FOUND.");

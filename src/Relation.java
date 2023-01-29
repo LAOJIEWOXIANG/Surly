@@ -139,7 +139,11 @@ public class Relation {
   
   /* Remove all tuples from the relation */
   public void delete() {
-    this.tuples.remove();
+    if (this.tuples.isEmpty()) {
+      System.out.println("Relation is already empty");
+    } else {
+      this.tuples.clear();
+    }
   }
 
   public Integer schemaSize() {
