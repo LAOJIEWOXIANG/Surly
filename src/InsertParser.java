@@ -41,10 +41,10 @@ public class InsertParser {
           element += attributes.charAt(i);
           i++;
         }
-        tuple.add(new AttributeValue("",element)); //sets name to empty string for now.
-      }                                            // I think it needs to be set when added
-    }                                              //to the relation because I don't have a way
-    return tuple;                                  //of accessing the schema from here.
+        tuple.add(new AttributeValue("",element));
+      }                                      
+    }                                            
+    return tuple;                                  
   }
   
   public boolean getIsValidSyntax() {
