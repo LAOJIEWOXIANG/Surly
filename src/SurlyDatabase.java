@@ -36,8 +36,14 @@ public class SurlyDatabase {
   public void destroyRelation(String name) {
       for (int i = 0; i < this.relations.size(); i++) {
         Relation currentRelation = this.relations.get(i);
-        if (currentRelation.getName().equalsIgnoreCase(name) && currentRelation != this.catalog) {
-          deleteRelationFromCatalog(currentRelation);
+        if (currentRelation.getName().equalsIgnoreCase(name)) {
+          if (currentRelation != this.catalog) {
+            deleteRelationFromCatalog(currentRelation);
+          } else {
+            System.out.println("ERROR DESTROYING RELATION: CANNOT DESTROY "
+                              + "CATALOG.");
+            return;
+          }
           this.relations.remove(currentRelation);
         }
       }
@@ -70,6 +76,6 @@ public class SurlyDatabase {
   /* Deletes a tuple from the catalog when a Relation is deleted. */
   private void deleteRelationFromCatalog(Relation relation) {
     String relationName = relation.getName();
-    this.catalog.deletetuple(relationName);
+    this.catalog.deleteTuple(relationName);
   }
 }
