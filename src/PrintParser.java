@@ -1,24 +1,20 @@
 import java.util.Arrays;
 
 public class PrintParser {
-  /* Reference to the input string being parsed */
-  private String input;
+  private String input; /* Reference to the input string being parsed */
   private boolean isValidSyntax;
   
-  /* Constructor to initialize the input field */
+  /* Constructor to initialize the input field. */
   public PrintParser(String input) {
     this.input = input;
     this.isValidSyntax = verifySyntax();
   }
   
-  /* Parses and returns the names the relations to print */
+  /* Parses and returns the names the relations to print. */
   public String[] parseRelationNames() {
-    String[] parts = this.input.split("[\\s,;]+");
-    String[] attributes = new String[parts.length - 1];
-    System.arraycopy(parts, 1, attributes, 0, parts.length - 1);
-    attributes = Arrays.stream(attributes).map(String::trim).toArray(String[]::new);
-    
-    return attributes;
+    String elements = this.input.substring(5); /* Removes "PRINT" from command */
+    String[] relationNames = elements.trim().split(",\\s+|;"); /* Isolates names */
+    return relationNames;
   }
   
   public boolean getIsValidSyntax() {

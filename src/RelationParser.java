@@ -19,24 +19,23 @@ public class RelationParser {
   
   /* Parses and returns a Relation with the given attributes. */
   public Relation parseRelation() {
-    String name = this.parseRelationName(); /* Parse relation name */
+    String name = this.parseRelationName();
     Relation relation = new Relation(name);
     
-    /* Isolates the attribute definitions. */
-    String attr = input.split("\\s+",3)[2].trim();
-    /* Need to handle bad parentheses syntax. */
-    
-    /* Array of individual attribute definitions. */
-    String[] attrDef = attr.substring(attr.indexOf("(")+1, attr.length() - 2).split(",");
+    /* Array of individual attribute definitions. */    
+    String inParentheses = input.substring(input.indexOf("(")+1, (input.indexOf(");")));
+    String[] attrDefs = inParentheses.split(",");
     
     /* Creates attributes with given attribute definitions and adds to relation schema. */
-    for (int i = 0; i < attrDef.length; i++) {
-      String[] elements = attrDef[i].trim().split("\\s+"); //can add error checking here later
+    for (int i = 0; i < attrDefs.length; i++) {
+      String[] elements = attrDefs[i].trim().split("\\s+");
+      
       /* Ensures attribute definition has exactly 3 elements. */
       if (elements.length != 3) {
         System.out.println("Invalid attribute length.");
         return null;
       }
+      /* Ensures attribute datatype is either CHAR or NUM*/
       if (!elements[1].equals("CHAR") && !elements[1].equals("NUM")) {
         System.out.println("Invalid attribute datatype: \"" + elements[1] + "\"");
         return null;

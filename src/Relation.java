@@ -17,23 +17,23 @@ public class Relation {
     
     /* Calculates how much space each element needs in the table. */
     int schemaSize = this.schema.size();
-    int[] lengths = new int[schemaSize];
+    int[] attributeLengths = new int[schemaSize];
     int totalLength = 0;
     for (int i = 0; i < schemaSize; i++) {
       Attribute a = this.schema.get(i);
       /* Gets the size of the attribute's max length or the
       length of the attribute name, whichever is largest*/
-      int length = Math.max(a.getLength(), a.getName().length());
-      lengths[i] = length;
-      totalLength += length + 3; /* Gives buffer space for " " and "|". */
+      int attributeLength = Math.max(a.getLength(), a.getName().length());
+      attributeLengths[i] = attributeLength;
+      totalLength += attributeLength + 3; /* Gives buffer space for " " and "|". */
     }
     totalLength++; /* One more space for the rightmost "|". */
     System.out.println("*".repeat(totalLength));
     printRelationName(totalLength);
     System.out.println("-".repeat(totalLength));
-    printSchema(totalLength,lengths);
+    printSchema(totalLength,attributeLengths);
     System.out.println("-".repeat(totalLength));
-    printTuples(totalLength,lengths);
+    printTuples(totalLength,attributeLengths);
     System.out.println("*".repeat(totalLength));
   }
   
@@ -48,7 +48,7 @@ public class Relation {
   private void printSchema(int length, int[] lengths) {
     for (int i = 0; i < schema.size(); i++) {
       System.out.print("| ");
-      System.out.printf("%-" + (lengths[i] + 1) +"S", schema.get(i).getName());
+      System.out.printf("%-" + (lengths[i] + 1) + "S", schema.get(i).getName());
     }
     System.out.println('|');
   }
@@ -71,43 +71,38 @@ public class Relation {
   
   /* Adds the specified tuple to the relation. */
   public void insert(Tuple tuple) {
-    if (tuple.length() == schema.size()) {
-      for (int i = 0; i < this.schema.size(); i++) {
-        Attribute currentSchema = this.schema.get(i);
-        tuple.setName(i,currentSchema.getName());
-        // check if the datatype of currentschema matches with tuple's datatype
-        String datatype = currentSchema.getDataType();
-        if (datatype.equalsIgnoreCase("NUM") && !isNumeric(tuple.getValue(i))) {
-           System.out.println("Invalid data type for attribute \"" 
-                              + currentSchema.getName() + "\" (given: \""
-                              + tuple.getValue(i) + "\" expected: NUM).");
-           return;
-        }
-        int maxLength = currentSchema.getLength();
-        if (tuple.getValue(i).length() > maxLength) {
-          tuple.trimValue(i, maxLength);
-        }
-      }
-      this.tuples.add(tuple);
-    } else {
+    if (tuple.length() != schema.size()) {
       System.out.println("Error inserting to relation \"" + this.name + "\"" +
                          " (tuple length does not match schema length).");
+      return;
     }
-  }
-
-  /* check if str is char */
-  public boolean isChar(String str) {
-    for (int i = 0; i < str.length(); i++) {
-      if (Character.isDigit(str.charAt(i))) {
-        continue;
-      } else {
-        return true;
+    
+    for (int i = 0; i < this.schema.size(); i++) {
+      Attribute currentAttribute = this.schema.get(i);
+     
+      /* Sets name of attribute value to corresponding attribute name. */
+      tuple.setName(i,currentAttribute.getName());
+     
+      /* Check if the datatypes of the current attribute
+      and the corresponding attribute value match. */
+      String datatype = currentAttribute.getDataType();
+      if (datatype.equalsIgnoreCase("NUM") && !isNumeric(tuple.getValue(i))) {
+         System.out.println("Invalid data type for attribute \"" 
+                            + currentAttribute.getName() + "\" (given: \""
+                            + tuple.getValue(i) + "\" expected: NUM).");
+         return;
+      }
+     
+      /* Trims down attribute value to the max length of the attribute. */
+      int maxLength = currentAttribute.getLength();
+      if (tuple.getValue(i).length() > maxLength) {
+        tuple.trimValue(i, maxLength);
       }
     }
-    return false;
+    this.tuples.add(tuple);
   }
 
-  /* check if str is numeric */
+  /* Returns true if str is numeric, returns false otherwise. */
   public boolean isNumeric(String str) {
     if (str == null) {
       return false;
@@ -121,16 +116,16 @@ public class Relation {
   }
 
   /* Deletes a tuple from the linked list by the name of its first attribute. */
-  public boolean deleteTuple(String name) {
-    Boolean deleted = false;
+  public boolean deletetuple(String name) {
+    Boolean isDeleted = false;
     for (int i = 0; i < this.tuples.size(); i++) {
       Tuple currentTuple = this.tuples.get(i);
       if (currentTuple.getValue(0).equalsIgnoreCase(name)) {
         this.tuples.remove(i);
-        deleted = true;
+        isDeleted = true;
       }
     }
-    return deleted;
+    return isDeleted;
   }
   
   /* Adds specified attribute to the schema. */
@@ -151,7 +146,8 @@ public class Relation {
       }
     }
   }
-
+  
+  /* Returns the number of attributes in the schema. */
   public Integer schemaSize() {
     return this.schema.size();
   }
