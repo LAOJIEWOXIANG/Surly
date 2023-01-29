@@ -69,6 +69,11 @@ public class LexicalAnalyzer {
       InsertParser insert = new InsertParser(command);
       if (insert.getIsValidSyntax()) {
         String relationName = insert.parseRelationName();
+        if (relationName.equalsIgnoreCase("CATALOG")) {
+           System.out.println("ERROR INSERTING TO RELATION: CANNOT INSERT TO "
+                              + "CATALOG.");
+           break;
+        }
         Tuple tuple = insert.parseTuple();
         Relation currentRelation = this.database.getRelation(relationName);
         if (currentRelation != null) {
@@ -121,9 +126,9 @@ public class LexicalAnalyzer {
       DeleteParser delete = new DeleteParser(command);
       if (delete.getIsValidSyntax()) {
         String relationName = delete.parseRelationName();
-        if (database.getRelation(relationName) != null) {
-           Relation relation = new Relation(relationName);
-           relation.delete();
+        Relation relationToDelete = database.getRelation(relationName);
+        if (relationToDelete != null) {
+          relationToDelete.delete();
         } else {
           System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
           System.out.println("RELATION NOT FOUND.");

@@ -4,6 +4,7 @@ public class Relation {
   private String name; /* name of the relation */
   private LinkedList<Attribute> schema; /* Schema of the relation */
   private LinkedList<Tuple> tuples; /* Tuples stored on the relation */
+  private final String CATALOG_NAME = "CATALOG";
   
   public Relation(String name) {
     this.name = name;
@@ -134,7 +135,16 @@ public class Relation {
   
   /* Remove all tuples from the relation */
   public void delete() {
-    this.tuples.remove();
+    if (this.tuples.isEmpty()) {
+      System.out.println("Relation is already empty");
+    } else {
+      if (this.name.equalsIgnoreCase(CATALOG_NAME)) {
+        System.out.println("ERROR DELETING FROM RELATION: CANNOT DELETE FROM "
+                              + "CATALOG.");
+      } else {
+        this.tuples.clear();
+      }
+    }
   }
   
   /* Returns the number of attributes in the schema. */
