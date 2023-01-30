@@ -109,8 +109,8 @@ public class LexicalAnalyzer {
       if (currentRelation != null) {
         currentRelation.insert(tuple);
       } else {
-        System.out.print("ERROR INSERTING TO RELATION \"" + relationName + "\": ");
-        System.out.println("RELATION NOT FOUND.");
+        System.out.println("ERROR INSERTING TO RELATION \"" + relationName + "\": "
+                           + "RELATION NOT FOUND.");
       }
     } else {
         System.out.println("INVALID SYNTAX: " + command);

@@ -20,10 +20,10 @@ public class Relation {
     int[] attributeLengths = new int[schemaSize];
     int totalLength = 0;
     for (int i = 0; i < schemaSize; i++) {
-      Attribute a = this.schema.get(i);
+      Attribute currAttr = this.schema.get(i);
       /* Gets the size of the attribute's max length or the
       length of the attribute name, whichever is largest*/
-      int attributeLength = Math.max(a.getLength(), a.getName().length());
+      int attributeLength = Math.max(currAttr.getLength(), currAttr.getName().length());
       attributeLengths[i] = attributeLength;
       totalLength += attributeLength + 3; /* Gives buffer space for " " and "|". */
     }

@@ -32,12 +32,15 @@ public class RelationParser {
       
       /* Ensures attribute definition has exactly 3 elements. */
       if (elements.length != 3) {
-        System.out.println("Invalid attribute length.");
+        System.out.println("INVALID ATTRIBUTE LENGTH FOR RELATION \"" + name 
+                           + "\" (given: " + elements.length + ", expected: 3");
         return null;
       }
       /* Ensures attribute datatype is either CHAR or NUM*/
       if (!elements[1].equals("CHAR") && !elements[1].equals("NUM")) {
-        System.out.println("Invalid attribute datatype: \"" + elements[1] + "\"");
+        System.out.println("INVALID ATTRIBUTE DATA TYPE FOR RELATION \"" + name 
+                           + "\": (given: " + elements[1] 
+                           + "\", expected: CHAR or NUM)");
         return null;
       }
       relation.addToSchema(new Attribute(elements[0],elements[1],Integer.valueOf(elements[2])));
