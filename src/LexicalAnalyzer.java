@@ -71,7 +71,7 @@ public class LexicalAnalyzer {
       break;
     }
       default:
-      if (!command.equals("") && !command.startsWith("#")) {
+      if (!command.equals("")) {
          System.out.println("INVALID COMMAND: " + command);
       }
     }
