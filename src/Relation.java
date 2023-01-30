@@ -72,8 +72,8 @@ public class Relation {
   /* Adds the specified tuple to the relation. */
   public void insert(Tuple tuple) {
     if (tuple.length() != schema.size()) {
-      System.out.println("ERROR INSERTING TO RELATION \"" + this.name + "\"" +
-                         " (TUPLE LENGTH AND SCHEMA LENGTH DO NOT MATCH).");
+      System.out.println("ERROR INSERTING TO RELATION \"" + this.name + "\":" +
+                         " (tuple length does not match schema length).");
       return;
     }
     

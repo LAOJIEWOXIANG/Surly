@@ -36,7 +36,7 @@ public class RelationParser {
                            + "\" (given: " + elements.length + ", expected: 3");
         return null;
       }
-      /* Ensures attribute datatype is either CHAR or NUM*/
+      /* Ensures attribute datatype is either CHAR or NUM */
       if (!elements[1].equals("CHAR") && !elements[1].equals("NUM")) {
         System.out.println("INVALID ATTRIBUTE DATA TYPE FOR RELATION \"" + name 
                            + "\": (given: " + elements[1] 
