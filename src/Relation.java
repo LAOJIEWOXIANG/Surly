@@ -20,10 +20,10 @@ public class Relation {
     int[] attributeLengths = new int[schemaSize];
     int totalLength = 0;
     for (int i = 0; i < schemaSize; i++) {
-      Attribute a = this.schema.get(i);
+      Attribute currAttr = this.schema.get(i);
       /* Gets the size of the attribute's max length or the
       length of the attribute name, whichever is largest*/
-      int attributeLength = Math.max(a.getLength(), a.getName().length());
+      int attributeLength = Math.max(currAttr.getLength(), currAttr.getName().length());
       attributeLengths[i] = attributeLength;
       totalLength += attributeLength + 3; /* Gives buffer space for " " and "|". */
     }
@@ -72,7 +72,7 @@ public class Relation {
   /* Adds the specified tuple to the relation. */
   public void insert(Tuple tuple) {
     if (tuple.length() != schema.size()) {
-      System.out.println("Error inserting to relation \"" + this.name + "\"" +
+      System.out.println("ERROR INSERTING TO RELATION \"" + this.name + "\":" +
                          " (tuple length does not match schema length).");
       return;
     }
@@ -87,9 +87,9 @@ public class Relation {
       and the corresponding attribute value match. */
       String datatype = currentAttribute.getDataType();
       if (datatype.equalsIgnoreCase("NUM") && !isNumeric(tuple.getValue(i))) {
-         System.out.println("Invalid data type for attribute \"" 
-                            + currentAttribute.getName() + "\" (given: \""
-                            + tuple.getValue(i) + "\" expected: NUM).");
+         System.out.println("ERROR INSERTING TO RELATION \"" + this.name + "\": " 
+                            + "INVALID DATA TYPE FOR ATTRIBUTE \"" + currentAttribute.getName() 
+                            + "\" (given: \"" + tuple.getValue(i) + "\" expected: NUM).");
          return;
       }
      
@@ -116,7 +116,7 @@ public class Relation {
   }
 
   /* Deletes a tuple from the linked list by the name of its first attribute. */
-  public boolean deletetuple(String name) {
+  public boolean deleteTuple(String name) {
     Boolean isDeleted = false;
     for (int i = 0; i < this.tuples.size(); i++) {
       Tuple currentTuple = this.tuples.get(i);
@@ -135,15 +135,11 @@ public class Relation {
   
   /* Remove all tuples from the relation */
   public void delete() {
-    if (this.tuples.isEmpty()) {
-      System.out.println("Relation is already empty");
+    if (this.name.equalsIgnoreCase(CATALOG_NAME)) {
+      System.out.println("ERROR DELETING FROM RELATION: CANNOT DELETE FROM "
+                         + "CATALOG.");
     } else {
-      if (this.name.equalsIgnoreCase(CATALOG_NAME)) {
-        System.out.println("ERROR DELETING FROM RELATION: CANNOT DELETE FROM "
-                              + "CATALOG.");
-      } else {
-        this.tuples.clear();
-      }
+      this.tuples.clear();
     }
   }
   
