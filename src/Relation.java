@@ -72,27 +72,27 @@ public class Relation {
   /* Adds the specified tuple to the relation. */
   public void insert(Tuple tuple) {
     if (tuple.length() != schema.size()) {
-      System.out.println("ERROR INSERTING TO RELATION \"" + this.name + "\":" +
-                         " (tuple length does not match schema length).");
+      System.out.println("ERROR INSERTING TO RELATION \"" + this.name + "\":"
+                         + " (tuple length does not match schema length).");
       return;
     }
     
     for (int i = 0; i < this.schema.size(); i++) {
       Attribute currentAttribute = this.schema.get(i);
-     
+      
       /* Sets name of attribute value to corresponding attribute name. */
       tuple.setName(i,currentAttribute.getName());
-     
+      
       /* Check if the datatypes of the current attribute
       and the corresponding attribute value match. */
       String datatype = currentAttribute.getDataType();
       if (datatype.equalsIgnoreCase("NUM") && !isNumeric(tuple.getValue(i))) {
-         System.out.println("ERROR INSERTING TO RELATION \"" + this.name + "\": " 
-                            + "INVALID DATA TYPE FOR ATTRIBUTE \"" + currentAttribute.getName() 
-                            + "\" (given: \"" + tuple.getValue(i) + "\" expected: NUM).");
-         return;
+        System.out.println("ERROR INSERTING TO RELATION \"" + this.name + "\": "
+                           + "INVALID DATA TYPE FOR ATTRIBUTE \"" + currentAttribute.getName()
+                           + "\" (given: \"" + tuple.getValue(i) + "\" expected: NUM).");
+        return;
       }
-     
+      
       /* Trims down attribute value to the max length of the attribute. */
       int maxLength = currentAttribute.getLength();
       if (tuple.getValue(i).length() > maxLength) {
@@ -101,20 +101,20 @@ public class Relation {
     }
     this.tuples.add(tuple);
   }
-
+  
   /* Returns true if str is numeric, returns false otherwise. */
   public boolean isNumeric(String str) {
     if (str == null) {
       return false;
     }
     try {
-        Integer d = Integer.parseInt(str);
+      Integer d = Integer.parseInt(str);
     } catch (NumberFormatException nfe) {
-        return false;
-    } 
+      return false;
+    }
     return true;
   }
-
+  
   /* Deletes a tuple from the linked list by the name of its first attribute. */
   public boolean deleteTuple(String name) {
     Boolean isDeleted = false;
