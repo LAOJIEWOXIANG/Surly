@@ -45,6 +45,7 @@ public class LexicalAnalyzer {
   * Then verify the command is syntactically correct and execute it.
   */
   private void processCommand(String command) {
+    command = dropComment(command);
     command = command.trim();
     String commandType = command.split("\\s+",2)[0];
     switch (commandType) {
@@ -167,5 +168,10 @@ public class LexicalAnalyzer {
     } else {
       System.out.println("INVALID SYNTAX: " + command);
     }
-  }  
+  } 
+  
+  // Drops commented lines from a string
+  private String dropComment(String command) {
+    return command.replaceAll("(?m)^#.*$", "");
+  } 
 }
