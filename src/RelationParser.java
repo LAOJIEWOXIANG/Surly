@@ -14,7 +14,7 @@ public class RelationParser {
   
   /* Returns the name of the relation. */
   public String parseRelationName() {
-     return this.input.split("\\s+")[1];
+    return this.input.split("\\s+")[1];
   }
   
   /* Parses and returns a Relation with the given attributes. */
@@ -22,7 +22,7 @@ public class RelationParser {
     String name = this.parseRelationName();
     Relation relation = new Relation(name);
     
-    /* Array of individual attribute definitions. */    
+    /* Array of individual attribute definitions. */
     String inParentheses = input.substring(input.indexOf("(")+1, (input.indexOf(");")));
     String[] attrDefs = inParentheses.split(",");
     
@@ -32,14 +32,14 @@ public class RelationParser {
       
       /* Ensures attribute definition has exactly 3 elements. */
       if (elements.length != 3) {
-        System.out.println("INVALID ATTRIBUTE LENGTH FOR RELATION \"" + name 
+        System.out.println("INVALID ATTRIBUTE LENGTH FOR RELATION \"" + name
                            + "\" (given: " + elements.length + ", expected: 3");
         return null;
       }
       /* Ensures attribute datatype is either CHAR or NUM */
       if (!elements[1].equals("CHAR") && !elements[1].equals("NUM")) {
-        System.out.println("INVALID ATTRIBUTE DATA TYPE FOR RELATION \"" + name 
-                           + "\": (given: " + elements[1] 
+        System.out.println("INVALID ATTRIBUTE DATA TYPE FOR RELATION \"" + name
+                           + "\": (given: " + elements[1]
                            + ", expected: CHAR or NUM)");
         return null;
       }

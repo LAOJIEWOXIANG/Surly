@@ -13,10 +13,10 @@ public class SurlyDatabase {
     this.relations = new LinkedList<>();
     this.catalog = new Relation("CATALOG");
     this.catalog.addToSchema(
-      new Attribute(RELATION_NAME_COLUMN, "CHAR", CATALOG_ATTRIBUTE_LENGTH)
+    new Attribute(RELATION_NAME_COLUMN, "CHAR", CATALOG_ATTRIBUTE_LENGTH)
     );
     this.catalog.addToSchema(
-      new Attribute(SCHEMA_LENGTH_COLUMN, "NUM", CATALOG_ATTRIBUTE_LENGTH)
+    new Attribute(SCHEMA_LENGTH_COLUMN, "NUM", CATALOG_ATTRIBUTE_LENGTH)
     );
     createRelation(this.catalog);
   }
@@ -34,19 +34,19 @@ public class SurlyDatabase {
   
   /* Removes the relation with the specified name from the database */
   public void destroyRelation(String name) {
-      for (int i = 0; i < this.relations.size(); i++) {
-        Relation currentRelation = this.relations.get(i);
-        if (currentRelation.getName().equalsIgnoreCase(name)) {
-          if (currentRelation != this.catalog) {
-            deleteRelationFromCatalog(currentRelation);
-          } else {
-            System.out.println("ERROR DESTROYING RELATION: CANNOT DESTROY "
-                              + "CATALOG.");
-            return;
-          }
-          this.relations.remove(currentRelation);
+    for (int i = 0; i < this.relations.size(); i++) {
+      Relation currentRelation = this.relations.get(i);
+      if (currentRelation.getName().equalsIgnoreCase(name)) {
+        if (currentRelation != this.catalog) {
+          deleteRelationFromCatalog(currentRelation);
+        } else {
+          System.out.println("ERROR DESTROYING RELATION: CANNOT DESTROY "
+                             + "CATALOG.");
+          return;
         }
+        this.relations.remove(currentRelation);
       }
+    }
   }
   
   /* Adds the given relation to the database */
@@ -61,7 +61,7 @@ public class SurlyDatabase {
   public Relation getCatalog(){
     return this.catalog;
   }
-
+  
   /* Adds a new tuple to the catalog every time a new relation is added the the db. */
   private void addRelationToCatalog(Relation relation) {
     String relationName = relation.getName();
@@ -73,7 +73,7 @@ public class SurlyDatabase {
     tuple.add(attributesValue);
     this.catalog.insert(tuple);
   }
-
+  
   /* Deletes a tuple from the catalog when a Relation is deleted. */
   private void deleteRelationFromCatalog(Relation relation) {
     String relationName = relation.getName();

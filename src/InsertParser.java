@@ -17,13 +17,13 @@ public class InsertParser {
     return words[1];
   }
   
-  /* Parses and returns a tuple based on a command.*/ 
+  /* Parses and returns a tuple based on a command.*/
   public Tuple parseTuple() {
     String attributeValues = removeSemicolon(this.input);
     attributeValues = attributeValues.split(DELIMITER,3)[2]; /* Isolate attribute values. */
     Tuple tuple = new Tuple();
     for (int i = 0; i < attributeValues.length(); i++) {
-    
+      
       /* If the current char is a single quote, add everything
       inside it to the tuple. */
       if (attributeValues.charAt(i) == SINGLE_QUOTE) {
@@ -33,9 +33,9 @@ public class InsertParser {
           betweenQuotes += attributeValues.charAt(i);
           i++;
           if (i == attributeValues.length()) {
-             System.out.println("SYNTAX ERROR FOR \"" + this.input 
-             + "\": MISSING CLOSING \"'\".");
-             return null;
+            System.out.println("SYNTAX ERROR FOR \"" + this.input
+                               + "\": MISSING CLOSING \"'\".");
+            return null;
           }
         }
         tuple.add(new AttributeValue("",betweenQuotes));
@@ -49,9 +49,9 @@ public class InsertParser {
           i++;
         }
         tuple.add(new AttributeValue("",element));
-      }                                      
-    }                                            
-    return tuple;                                  
+      }
+    }
+    return tuple;
   }
   
   /* Accessor for isValidSyntax field. */

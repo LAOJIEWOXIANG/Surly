@@ -51,29 +51,29 @@ public class LexicalAnalyzer {
     String commandType = command.split("\\s+",2)[0];
     switch (commandType) {
       case "RELATION": {
-      handleRelation(command);       
-      break;
-    }
+        handleRelation(command);
+        break;
+      }
       case "INSERT": {
-      handleInsert(command);
-      break;
-    }
+        handleInsert(command);
+        break;
+      }
       case "PRINT":{
-      handlePrint(command);
-            
-      break;
-    }
-      case "DESTROY": { 
-      handleDestroy(command);
-      break;
-    }
+        handlePrint(command);
+        
+        break;
+      }
+      case "DESTROY": {
+        handleDestroy(command);
+        break;
+      }
       case "DELETE": {
-      handleDelete(command);
-      break;
-    }
+        handleDelete(command);
+        break;
+      }
       default:
       if (!command.equals("")) {
-         System.out.println("INVALID COMMAND: " + command);
+        System.out.println("INVALID COMMAND: " + command);
       }
     }
   }
@@ -85,14 +85,14 @@ public class LexicalAnalyzer {
     String relationName = relationParser.parseRelationName();
     if (relationParser.getIsValidSyntax()) {
       if (this.database.getRelation(relationName) == null) {
-         Relation newRelation = relationParser.parseRelation();
-         if (newRelation != null) {
-            this.database.createRelation(newRelation);
-         }
-      } 
+        Relation newRelation = relationParser.parseRelation();
+        if (newRelation != null) {
+          this.database.createRelation(newRelation);
+        }
+      }
     } else {
       System.out.println("INVALID SYNTAX: " + command);
-    }   
+    }
   }
   
   /* Processes an INSERT command by passing it to the insert parser. */
@@ -102,23 +102,23 @@ public class LexicalAnalyzer {
       String relationName = insert.parseRelationName();
       if (relationName.equalsIgnoreCase("CATALOG")) {
         System.out.println("ERROR INSERTING TO RELATION: CANNOT INSERT TO "
-                          + "CATALOG.");
+        + "CATALOG.");
         return;
       }
       Tuple tuple = insert.parseTuple();
       if (tuple == null) {
-         return;
+        return;
       }
       Relation currentRelation = this.database.getRelation(relationName);
       if (currentRelation != null) {
         currentRelation.insert(tuple);
       } else {
         System.out.println("ERROR INSERTING TO RELATION \"" + relationName + "\": "
-                           + "RELATION NOT FOUND.");
+        + "RELATION NOT FOUND.");
       }
     } else {
-        System.out.println("INVALID SYNTAX: " + command);
-      }
+      System.out.println("INVALID SYNTAX: " + command);
+    }
   }
   
   /* Processes a PRINT command by passing it to the print parser. */
@@ -172,10 +172,10 @@ public class LexicalAnalyzer {
     } else {
       System.out.println("INVALID SYNTAX: " + command);
     }
-  } 
+  }
   
   /* Drops commented lines from a string. */
   private String dropComment(String command) {
     return command.replaceAll("(?m)^#.*$", "");
-  } 
+  }
 }

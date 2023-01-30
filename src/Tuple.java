@@ -43,7 +43,7 @@ public class Tuple {
   
   /* Returns the number of AttributeValues in the tuple. */
   public int length() {
-     return values.size();
+    return values.size();
   }
   
   /* Adds given AttributeValue to the list of values. */
