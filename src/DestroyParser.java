@@ -13,11 +13,14 @@ public class DestroyParser {
       String relationName = this.input.split("\\s+")[1];
       return relationName.substring(0, relationName.length() - 1);
     }
-
+    
+    /* Accessor for isValidSyntax field. */
     public boolean getIsValidSyntax() {
       return this.isValidSyntax;
     }
     
+    /* Checks if String is in the form "DESTROY <Relation Name>;" 
+     * where <Relation Name> is any string of non-whitespace characters. */
     public boolean verifySyntax() {
       return this.input.matches("DESTROY\\s+(\\w+\\s*,\\s*)*\\w+\\s*;");    
     }

@@ -5,6 +5,7 @@ import java.io.IOException;
 public class LexicalAnalyzer {
   
   private SurlyDatabase database;
+  
   /* Constructor to initialize the database. */
   public LexicalAnalyzer() {
     this.database = new SurlyDatabase();
@@ -23,13 +24,13 @@ public class LexicalAnalyzer {
       while ((c = br.read()) != -1) {
         char nextChar = (char) c;
         if (nextChar == ';') {
-          // The character is a semicolon - end of command
+          /* The character is a semicolon - end of command */
           sb.append(nextChar);
           String finalString = sb.toString();
           sb.setLength(0);
           processCommand(finalString);
         } else {
-          // The character is still part of the command
+          /* The character is still part of the command */
           sb.append(nextChar);
         }
       }
@@ -170,7 +171,7 @@ public class LexicalAnalyzer {
     }
   } 
   
-  // Drops commented lines from a string
+  /* Drops commented lines from a string. */
   private String dropComment(String command) {
     return command.replaceAll("(?m)^#.*$", "");
   } 

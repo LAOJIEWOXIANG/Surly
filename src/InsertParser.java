@@ -50,6 +50,7 @@ public class InsertParser {
     return tuple;                                  
   }
   
+  /* Accessor for isValidSyntax field. */
   public boolean getIsValidSyntax() {
     return this.isValidSyntax;
   }

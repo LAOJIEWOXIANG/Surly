@@ -40,7 +40,7 @@ public class RelationParser {
       if (!elements[1].equals("CHAR") && !elements[1].equals("NUM")) {
         System.out.println("INVALID ATTRIBUTE DATA TYPE FOR RELATION \"" + name 
                            + "\": (given: " + elements[1] 
-                           + "\", expected: CHAR or NUM)");
+                           + ", expected: CHAR or NUM)");
         return null;
       }
       relation.addToSchema(new Attribute(elements[0],elements[1],Integer.valueOf(elements[2])));
@@ -48,6 +48,7 @@ public class RelationParser {
     return relation;
   }
   
+  /* Accessor for isValidSyntax field. */
   public boolean getIsValidSyntax() {
     return this.isValidSyntax;
   }

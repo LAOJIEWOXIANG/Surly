@@ -17,12 +17,13 @@ public class PrintParser {
     return relationNames;
   }
   
+  /* Accessor for isValidSyntax field. */
   public boolean getIsValidSyntax() {
     return this.isValidSyntax;
   }
   
   /*
-  * check if a string is in the form "PRINT <list>;", where <list> is a list of
+  * Check if a string is in the form "PRINT <list>;", where <list> is a list of
   * items separated by commas and any amount of whitespace
   */
   private boolean verifySyntax() {
