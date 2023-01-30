@@ -72,8 +72,8 @@ public class Relation {
   /* Adds the specified tuple to the relation. */
   public void insert(Tuple tuple) {
     if (tuple.length() != schema.size()) {
-      System.out.println("Error inserting to relation \"" + this.name + "\"" +
-                         " (tuple length does not match schema length).");
+      System.out.println("ERROR INSERTING TO RELATION \"" + this.name + "\"" +
+                         " (TUPLE LENGTH AND SCHEMA LENGTH DO NOT MATCH).");
       return;
     }
     
@@ -87,9 +87,9 @@ public class Relation {
       and the corresponding attribute value match. */
       String datatype = currentAttribute.getDataType();
       if (datatype.equalsIgnoreCase("NUM") && !isNumeric(tuple.getValue(i))) {
-         System.out.println("Invalid data type for attribute \"" 
-                            + currentAttribute.getName() + "\" (given: \""
-                            + tuple.getValue(i) + "\" expected: NUM).");
+         System.out.println("ERROR INSERTING TO RELATION \"" + this.name + "\": " 
+                            + "INVALID DATA TYPE FOR ATTRIBUTE \"" + currentAttribute.getName() 
+                            + "\" (given: \"" + tuple.getValue(i) + "\" expected: NUM).");
          return;
       }
      
@@ -135,15 +135,11 @@ public class Relation {
   
   /* Remove all tuples from the relation */
   public void delete() {
-    if (this.tuples.isEmpty()) {
-      System.out.println("Relation is already empty");
+    if (this.name.equalsIgnoreCase(CATALOG_NAME)) {
+      System.out.println("ERROR DELETING FROM RELATION: CANNOT DELETE FROM "
+                         + "CATALOG.");
     } else {
-      if (this.name.equalsIgnoreCase(CATALOG_NAME)) {
-        System.out.println("ERROR DELETING FROM RELATION: CANNOT DELETE FROM "
-                              + "CATALOG.");
-      } else {
-        this.tuples.clear();
-      }
+      this.tuples.clear();
     }
   }
   
