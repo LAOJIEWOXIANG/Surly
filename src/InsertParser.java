@@ -4,7 +4,6 @@ public class InsertParser {
   private boolean isValidSyntax;
   private final String DELIMITER = "\\s+";
   private final char SINGLE_QUOTE = 39;
-  private final char WHITESPACE = ' ';
   
   /* Constructor to initialize the input field */
   public InsertParser(String input) {
@@ -33,14 +32,19 @@ public class InsertParser {
         while (attributeValues.charAt(i) != SINGLE_QUOTE) {
           betweenQuotes += attributeValues.charAt(i);
           i++;
+          if (i == attributeValues.length()) {
+             System.out.println("SYNTAX ERROR FOR \"" + this.input 
+             + "\": MISSING CLOSING \"'\".");
+             return null;
+          }
         }
         tuple.add(new AttributeValue("",betweenQuotes));
         
         /* If the current char isn't a space, read until a space
         and add that string to the tuple. */
-      } else if (attributeValues.charAt(i) != WHITESPACE) {
+      } else if (!Character.isWhitespace(attributeValues.charAt(i))) {
         String element = "";
-        while (i < attributeValues.length() && attributeValues.charAt(i) != WHITESPACE) {
+        while (i < attributeValues.length() && !Character.isWhitespace(attributeValues.charAt(i))) {
           element += attributeValues.charAt(i);
           i++;
         }

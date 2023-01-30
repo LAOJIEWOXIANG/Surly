@@ -106,6 +106,9 @@ public class LexicalAnalyzer {
         return;
       }
       Tuple tuple = insert.parseTuple();
+      if (tuple == null) {
+         return;
+      }
       Relation currentRelation = this.database.getRelation(relationName);
       if (currentRelation != null) {
         currentRelation.insert(tuple);
