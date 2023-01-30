@@ -13,7 +13,7 @@ public class DeleteParser {
     public String parseRelationName() {
       /* Removes semicolon from end of command. */
       input = input.substring(0,input.length()-1);
-      return input.split(" ")[1];
+      return input.split("\\s+")[1];
     }
 
     public boolean getIsValidSyntax() {
