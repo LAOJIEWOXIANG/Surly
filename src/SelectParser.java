@@ -36,6 +36,9 @@ public class SelectParser {
 
     private String getWhereClause() {
         int whereIndex = input.toUpperCase().indexOf("WHERE");
-        return input.substring(whereIndex, input.length());
+        if (whereIndex != -1) {
+            return input.substring(whereIndex, input.length());
+        }
+        return ""; 
     }
 }
