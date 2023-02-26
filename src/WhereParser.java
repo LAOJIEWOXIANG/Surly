@@ -36,6 +36,9 @@ public class WhereParser {
     }
 
     private boolean meetsConditions(Tuple tuple, int ops) {
+        if (input.equals("")) {
+            return true;
+        }
         boolean first = evaluate(tuple,0);
         boolean second = first;
         for (int i = 0; i<ops; i++) {
