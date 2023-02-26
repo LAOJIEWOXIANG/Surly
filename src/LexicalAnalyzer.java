@@ -60,7 +60,6 @@ public class LexicalAnalyzer {
       }
       case "PRINT":{
         handlePrint(command);
-        
         break;
       }
       case "DESTROY": {
@@ -71,14 +70,48 @@ public class LexicalAnalyzer {
         handleDelete(command);
         break;
       }
+      /* Need to change LexicalAnalyzer to be able to handle setting temp relations */
+      case "SELECT": {
+        handleSelect(command);
+        break;
+      }
       default:
       if (!command.equals("")) {
         System.out.println("INVALID COMMAND: " + command);
       }
     }
   }
+
+
+  private void handleSelect(String command) {
+    SelectParser select = new SelectParser(command);
+    String relationName = select.parseRelationName();
+    Relation selectedRelation = database.getRelation(relationName);
+    if (selectedRelation != null) {
+      database.createRelation(select.selectWhere(selectedRelation, "T1"));
+    } else {
+      System.out.print("ERROR SELECTING FROM RELATION \"" + relationName + "\": ");
+      System.out.println("RELATION NOT FOUND.");
+    }
+  }
   
-  
+  /* Processes a DELETE command by passing it to the delete parser. */
+  private void handleDelete(String command) {
+    DeleteParser delete = new DeleteParser(command);
+    if (delete.getIsValidSyntax()) {
+      String relationName = delete.parseRelationName();
+      Relation relationToDelete = database.getRelation(relationName);
+      if (relationToDelete != null) {
+        relationToDelete.delete();
+      } else {
+        System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
+        System.out.println("RELATION NOT FOUND.");
+      }
+    } else {
+      System.out.println("INVALID SYNTAX: " + command);
+    }
+  }
+
   /* Processes a RELATION command by passing it to the relation parser. */
   private void handleRelation(String command) {
     RelationParser relationParser = new RelationParser(command);
@@ -157,22 +190,7 @@ public class LexicalAnalyzer {
     }
   }
   
-  /* Processes a DELETE command by passing it to the delete parser. */
-  private void handleDelete(String command) {
-    DeleteParser delete = new DeleteParser(command);
-    if (delete.getIsValidSyntax()) {
-      String relationName = delete.parseRelationName();
-      Relation relationToDelete = database.getRelation(relationName);
-      if (relationToDelete != null) {
-        relationToDelete.delete();
-      } else {
-        System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
-        System.out.println("RELATION NOT FOUND.");
-      }
-    } else {
-      System.out.println("INVALID SYNTAX: " + command);
-    }
-  }
+  
   
   /* Drops commented lines from a string. */
   private String dropComment(String command) {
