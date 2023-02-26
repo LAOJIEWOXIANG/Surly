@@ -96,8 +96,7 @@ public class LexicalAnalyzer {
     String relationName = select.parseRelationName();
     Relation selectedRelation = database.getRelation(relationName);
     if (selectedRelation != null) {
-      //this adds to catalog right now, need it to not do that.
-      database.createRelation(select.selectWhere(selectedRelation, name));
+      database.createTempRelation(select.selectWhere(selectedRelation, name));
     } else {
       System.out.print("ERROR SELECTING FROM RELATION \"" + relationName + "\": ");
       System.out.println("RELATION NOT FOUND.");
