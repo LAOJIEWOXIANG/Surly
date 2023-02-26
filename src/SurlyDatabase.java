@@ -3,7 +3,6 @@ import java.util.LinkedList;
 public class SurlyDatabase {
   /* Collection of relations in the database */
   private LinkedList<Relation> relations;
-  private LinkedList<Relation> tempRelations;
   private Relation catalog;
   private final Integer CATALOG_ATTRIBUTE_LENGTH = 16;
   private final String RELATION_NAME_COLUMN = "RELATION";
@@ -12,7 +11,6 @@ public class SurlyDatabase {
   /* Constructor to initialize LinkedList of relations and create catalog. */
   public SurlyDatabase() {
     this.relations = new LinkedList<>();
-    this.tempRelations = new LinkedList<>();
     this.catalog = new Relation("CATALOG");
     this.catalog.addToSchema(
     new Attribute(RELATION_NAME_COLUMN, "CHAR", CATALOG_ATTRIBUTE_LENGTH)
@@ -27,11 +25,6 @@ public class SurlyDatabase {
   if no such relation exists. */
   public Relation getRelation(String name) {
     for (Relation r : this.relations) {
-      if (r.getName().equalsIgnoreCase(name)) {
-        return r;
-      }
-    }
-    for (Relation r : this.tempRelations) {
       if (r.getName().equalsIgnoreCase(name)) {
         return r;
       }
@@ -64,9 +57,10 @@ public class SurlyDatabase {
     }
   }
 
+  /* Creates relation like normal but does not add it to CATALOG. */
   public void createTempRelation(Relation relation) {
     if(getRelation(relation.getName()) == null) {
-      this.tempRelations.add(relation);
+      this.relations.add(relation);
     } else {
       System.out.println("ERROR CREATING TEMPORARY RELATION \"" + 
                          relation.getName() + "\": TEMPORARY "+
@@ -95,5 +89,14 @@ public class SurlyDatabase {
   private void deleteRelationFromCatalog(Relation relation) {
     String relationName = relation.getName();
     this.catalog.deleteTuple(relationName);
+  }
+
+  public boolean isTempRelation(String relationName) {
+    for (int i = 0; i<catalog.size(); i++) {
+      if (catalog.getTuple(i).getValue("RELATION").equalsIgnoreCase(relationName)) {
+        return false;
+      }
+    }
+    return true;
   }
 }

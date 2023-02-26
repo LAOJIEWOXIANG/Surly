@@ -110,7 +110,12 @@ public class LexicalAnalyzer {
       String relationName = delete.parseRelationName();
       Relation relationToDelete = database.getRelation(relationName);
       if (relationToDelete != null) {
-        relationToDelete.delete();
+        if (!database.isTempRelation(relationName)) {
+          relationToDelete.delete();
+        } else {
+          System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
+          System.out.println("CANNOT DELETE FROM TEMPORARY RELATION.");
+        }
       } else {
         System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
         System.out.println("RELATION NOT FOUND.");
@@ -152,7 +157,12 @@ public class LexicalAnalyzer {
       }
       Relation currentRelation = this.database.getRelation(relationName);
       if (currentRelation != null) {
-        currentRelation.insert(tuple);
+        if (!database.isTempRelation(relationName)) {
+          currentRelation.insert(tuple);
+        } else {
+          System.out.print("ERROR INSERTING TO RELATION \"" + relationName + "\": ");
+          System.out.println("CANNOT INSERT TO TEMPORARY RELATION.");
+        }
       } else {
         System.out.println("ERROR INSERTING TO RELATION \"" + relationName + "\": "
         + "RELATION NOT FOUND.");
@@ -188,7 +198,12 @@ public class LexicalAnalyzer {
     String relationName = destroy.parseRelationName();
     if (destroy.getIsValidSyntax() == true) {
       if (this.database.getRelation(relationName) != null) {
-        this.database.destroyRelation(relationName);
+        if (!database.isTempRelation(relationName)) {
+          this.database.destroyRelation(relationName);
+        } else {
+          System.out.print("ERROR DESTROYING RELATION \"" + relationName + "\": ");
+          System.out.println("CANNOT DESTROY TEMPORARY RELATION.");
+        }
       } else {
         System.out.print("ERROR DESTROYING RELATION \"" + relationName + "\": ");
         System.out.println("RELATION NOT FOUND.");
