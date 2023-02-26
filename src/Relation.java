@@ -11,7 +11,25 @@ public class Relation {
     this.schema = new LinkedList<>();
     this.tuples = new LinkedList<>();
   }
-  
+
+  /* Returns the number of tuples in a relation. */
+  public int size() {
+    return tuples.size();
+  }
+
+  public Attribute getSchema(int index) {
+    return schema.get(index);
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  /* Returns the tuple at the given index. */
+  public Tuple getTuple(int index) {
+    return tuples.get(index);
+  }
+
   /* Formats and prints the relation's name, schema, and tuples */
   public void print() {
     
