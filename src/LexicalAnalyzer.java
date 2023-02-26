@@ -46,8 +46,16 @@ public class LexicalAnalyzer {
   * Then verify the command is syntactically correct and execute it.
   */
   private void processCommand(String command) {
+    String tempRelationName = "";
     command = dropComment(command);
     command = command.trim();
+    if (command.equals("")) {
+      return;
+    }
+    if (command.split("\\s+")[1].equals("=")) {
+      tempRelationName = command.split("\\s+")[0];
+      command = command.split("\\s+",3)[2];
+    }
     String commandType = command.split("\\s+",2)[0];
     switch (commandType) {
       case "RELATION": {
@@ -72,7 +80,7 @@ public class LexicalAnalyzer {
       }
       /* Need to change LexicalAnalyzer to be able to handle setting temp relations */
       case "SELECT": {
-        handleSelect(command);
+        handleSelect(command, tempRelationName);
         break;
       }
       default:
@@ -83,12 +91,13 @@ public class LexicalAnalyzer {
   }
 
 
-  private void handleSelect(String command) {
+  private void handleSelect(String command, String name) {
     SelectParser select = new SelectParser(command);
     String relationName = select.parseRelationName();
     Relation selectedRelation = database.getRelation(relationName);
     if (selectedRelation != null) {
-      database.createRelation(select.selectWhere(selectedRelation, "T1"));
+      //this adds to catalog right now, need it to not do that.
+      database.createRelation(select.selectWhere(selectedRelation, name));
     } else {
       System.out.print("ERROR SELECTING FROM RELATION \"" + relationName + "\": ");
       System.out.println("RELATION NOT FOUND.");
