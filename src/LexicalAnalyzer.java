@@ -46,8 +46,16 @@ public class LexicalAnalyzer {
   * Then verify the command is syntactically correct and execute it.
   */
   private void processCommand(String command) {
+    String tempRelationName = "";
     command = dropComment(command);
     command = command.trim();
+    if (command.equals("")) {
+      return;
+    }
+    if (command.split("\\s+")[1].equals("=")) {
+      tempRelationName = command.split("\\s+")[0];
+      command = command.split("\\s+",3)[2];
+    }
     String commandType = command.split("\\s+",2)[0];
     switch (commandType) {
       case "RELATION": {
@@ -55,7 +63,7 @@ public class LexicalAnalyzer {
         break;
       }
       case "PROJECT": {
-        handleProject(command);
+        handleProject(command,tempRelationName);
         break;
       }
       case "INSERT": {
@@ -83,10 +91,10 @@ public class LexicalAnalyzer {
   }
   
 
-  private void handleProject(String command) {
+  private void handleProject(String command, String name) {
     ProjectParser pp = new ProjectParser(command);
     String relationName = pp.parseRelationName();
-    Relation tempRelation = pp.project(this.database.getRelation(relationName), "Temp");
+    Relation tempRelation = pp.project(this.database.getRelation(relationName), name);
     //
     this.database.createRelation(tempRelation);
   }
