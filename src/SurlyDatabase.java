@@ -57,6 +57,17 @@ public class SurlyDatabase {
     }
   }
   
+  /* Creates relation like normal but does not add it to CATALOG. */
+  public void createTempRelation(Relation relation) {
+    if(getRelation(relation.getName()) == null) {
+      this.relations.add(relation);
+    } else {
+      System.out.println("ERROR CREATING TEMPORARY RELATION \"" + 
+                         relation.getName() + "\": TEMPORARY "+
+                         "RELATIONS CANNOT OVERWRITE EXISTING BASE RELATION.");
+    }
+  }
+
   /* Accessor method for CATALOG. */
   public Relation getCatalog(){
     return this.catalog;
@@ -78,5 +89,14 @@ public class SurlyDatabase {
   private void deleteRelationFromCatalog(Relation relation) {
     String relationName = relation.getName();
     this.catalog.deleteTuple(relationName);
+  }
+
+  public boolean isTempRelation(String relationName) {
+    for (int i = 0; i<catalog.size(); i++) {
+      if (catalog.getTuple(i).getValue("RELATION").equalsIgnoreCase(relationName)) {
+        return false;
+      }
+    }
+    return true;
   }
 }

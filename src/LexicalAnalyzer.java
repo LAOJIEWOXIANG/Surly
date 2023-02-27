@@ -95,8 +95,7 @@ public class LexicalAnalyzer {
     ProjectParser pp = new ProjectParser(command);
     String relationName = pp.parseRelationName();
     Relation tempRelation = pp.project(this.database.getRelation(relationName), name);
-    //
-    this.database.createRelation(tempRelation);
+    this.database.createTempRelation(tempRelation);
   }
   
   /* Processes a RELATION command by passing it to the relation parser. */
