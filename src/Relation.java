@@ -12,6 +12,9 @@ public class Relation {
     this.tuples = new LinkedList<>();
   }
   
+  public Tuple getTuple(int index) {
+    return tuples.get(index);
+  }
   /* Formats and prints the relation's name, schema, and tuples */
   public void print() {
     
@@ -132,6 +135,10 @@ public class Relation {
   public void addToSchema(Attribute attribute) {
     this.schema.add(attribute);
   }
+
+  public Attribute getAttribute(int index) {
+    return this.schema.get(index);
+  }
   
   /* Remove all tuples from the relation */
   public void delete() {
@@ -143,6 +150,11 @@ public class Relation {
     }
   }
   
+  /* Returns number of tuples in relation. */
+  public int size() {
+    return tuples.size();
+  }
+
   /* Returns the number of attributes in the schema. */
   public Integer schemaSize() {
     return this.schema.size();
