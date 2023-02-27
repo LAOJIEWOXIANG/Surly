@@ -54,6 +54,10 @@ public class LexicalAnalyzer {
         handleRelation(command);
         break;
       }
+      case "PROJECT": {
+        handleProject(command);
+        break;
+      }
       case "INSERT": {
         handleInsert(command);
         break;
@@ -78,6 +82,14 @@ public class LexicalAnalyzer {
     }
   }
   
+
+  private void handleProject(String command) {
+    ProjectParser pp = new ProjectParser(command);
+    String relationName = pp.parseRelationName();
+    Relation tempRelation = pp.project(this.database.getRelation(relationName), "Temp");
+    //
+    this.database.createRelation(tempRelation);
+  }
   
   /* Processes a RELATION command by passing it to the relation parser. */
   private void handleRelation(String command) {
