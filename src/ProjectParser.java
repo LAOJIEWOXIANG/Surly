@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProjectParser {
     private String input;
@@ -22,15 +23,25 @@ public class ProjectParser {
         }
         int numTuples = relation.size();
         //doesnt ignore duplicates for now
+        HashMap<String,Integer> existingTuples = new HashMap<>();
         for (int i = 0; i < numTuples; i++) {
             Tuple tuple = relation.getTuple(i);
             Tuple newTuple = new Tuple();
-            for (String s : attributes) {
-                String value = tuple.getValue(s);
-                AttributeValue av = new AttributeValue(s,tuple.getValue(s));
+            boolean notDuplicate = false;
+            for (int j = 0; j < attributes.size(); j++) {
+                String attr = attributes.get(j);
+                String currVal = tuple.getValue(attr);
+                if (!existingTuples.containsKey(currVal) || existingTuples.get(currVal) != j) {
+                    notDuplicate = true;
+                    existingTuples.put(currVal,j);
+                } 
+                AttributeValue av = new AttributeValue(attr,currVal);
                 newTuple.add(av);
             }
-            newRelation.insert(newTuple);
+            if (notDuplicate) {
+                newRelation.insert(newTuple);
+            }
+            
         }
         return newRelation;
     }
