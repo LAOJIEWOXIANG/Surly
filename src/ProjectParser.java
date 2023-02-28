@@ -13,16 +13,11 @@ public class ProjectParser {
 
     public Relation project(Relation relation, String name) {
         Relation newRelation = new Relation(name);
-        int schemaSize = relation.schemaSize();
         /* Setting schema */
-        for (int i = 0; i<schemaSize; i++) {
-            Attribute currAttribute = relation.getAttribute(i);
-            if (attributes.contains(currAttribute.getName())) {
-                newRelation.addToSchema(currAttribute);
-            }
+        for (String attrName : attributes) {
+            newRelation.addToSchema(relation.getAttribute(attrName));
         }
         int numTuples = relation.size();
-        //doesnt ignore duplicates for now
         HashMap<String,Integer> existingTuples = new HashMap<>();
         for (int i = 0; i < numTuples; i++) {
             Tuple tuple = relation.getTuple(i);

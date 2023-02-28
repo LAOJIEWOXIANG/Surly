@@ -136,8 +136,14 @@ public class Relation {
     this.schema.add(attribute);
   }
 
-  public Attribute getAttribute(int index) {
-    return this.schema.get(index);
+  /* Return attribute with the given name */
+  public Attribute getAttribute(String name) {
+    for (Attribute attr : schema) {
+      if (attr.getName().equals(name)) {
+        return attr;
+      }
+    }
+    return null;
   }
   
   /* Remove all tuples from the relation */
