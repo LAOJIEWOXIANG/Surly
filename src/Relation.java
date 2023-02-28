@@ -11,6 +11,11 @@ public class Relation {
     this.schema = new LinkedList<>();
     this.tuples = new LinkedList<>();
   }
+  
+  //maybe we shouldnt return Tuples but we can deal with that later
+  public Tuple getTuple(int index) {
+    return tuples.get(index);
+  }
 
   /* Returns the number of tuples in a relation. */
   public int size() {
@@ -150,6 +155,16 @@ public class Relation {
   public void addToSchema(Attribute attribute) {
     this.schema.add(attribute);
   }
+
+  /* Return attribute with the given name */
+  public Attribute getAttribute(String name) {
+    for (Attribute attr : schema) {
+      if (attr.getName().equals(name)) {
+        return attr;
+      }
+    }
+    return null;
+  }
   
   /* Remove all tuples from the relation */
   public void delete() {
@@ -161,6 +176,11 @@ public class Relation {
     }
   }
   
+  /* Returns number of tuples in relation. */
+  public int size() {
+    return tuples.size();
+  }
+
   /* Returns the number of attributes in the schema. */
   public Integer schemaSize() {
     return this.schema.size();

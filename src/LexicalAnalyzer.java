@@ -62,6 +62,10 @@ public class LexicalAnalyzer {
         handleRelation(command);
         break;
       }
+      case "PROJECT": {
+        handleProject(command,tempRelationName);
+        break;
+      }
       case "INSERT": {
         handleInsert(command);
         break;
@@ -103,6 +107,16 @@ public class LexicalAnalyzer {
     }
   }
   
+
+
+  private void handleProject(String command, String name) {
+    ProjectParser pp = new ProjectParser(command);
+    String relationName = pp.parseRelationName();
+    Relation tempRelation = pp.project(this.database.getRelation(relationName), name);
+    this.database.createTempRelation(tempRelation);
+  }
+  
+
   /* Processes a DELETE command by passing it to the delete parser. */
   private void handleDelete(String command) {
     DeleteParser delete = new DeleteParser(command);
