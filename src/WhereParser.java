@@ -70,19 +70,27 @@ public class WhereParser {
             case "!=":
               return !tupleValue.equals(compareValue);
             case "<":
-              return Float.valueOf(tupleValue)
-              .compareTo(Float.valueOf(compareValue)) < 0;
+              return compareAttributes(tupleValue, compareValue) < 0;
             case ">":
-            return Float.valueOf(tupleValue)
-            .compareTo(Float.valueOf(compareValue)) > 0;
+            return compareAttributes(tupleValue, compareValue) > 0;
             case "<=":
-              return Float.valueOf(tupleValue)
-              .compareTo(Float.valueOf(compareValue)) <= 0;
+              return compareAttributes(tupleValue, compareValue) <= 0;
             case ">=":
-            return Float.valueOf(tupleValue)
-            .compareTo(Float.valueOf(compareValue)) >= 0;
+            return compareAttributes(tupleValue, compareValue) >= 0;
         }
         return true;
+    }
+
+    /* Returns negative if attribute1 is less than attribute2, returns 0 if they are the same,
+     * returns positive value otherwise */
+    private int compareAttributes(String attribute1, String attribute2) {
+        int result = 0;
+        try {
+            result = Integer.valueOf(attribute1).compareTo(Integer.valueOf(attribute2));
+        } catch (NumberFormatException e) {
+            result = attribute1.compareTo(attribute2);
+        }
+        return result;
     }
 
     private boolean isComparisonOperator(String input) {
