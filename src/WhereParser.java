@@ -70,15 +70,17 @@ public class WhereParser {
             case "!=":
               return !tupleValue.equals(compareValue);
             case "<":
-              return tupleValue.compareTo(compareValue) < 0;
+              return Float.valueOf(tupleValue)
+              .compareTo(Float.valueOf(compareValue)) < 0;
             case ">":
-              return tupleValue.compareTo(compareValue) > 0;
+            return Float.valueOf(tupleValue)
+            .compareTo(Float.valueOf(compareValue)) > 0;
             case "<=":
-              return tupleValue.compareTo(compareValue) < 0 || 
-                     tupleValue.equals(compareValue);
+              return Float.valueOf(tupleValue)
+              .compareTo(Float.valueOf(compareValue)) <= 0;
             case ">=":
-              return tupleValue.compareTo(compareValue) > 0 || 
-                     tupleValue.equals(compareValue);
+            return Float.valueOf(tupleValue)
+            .compareTo(Float.valueOf(compareValue)) >= 0;
         }
         return true;
     }

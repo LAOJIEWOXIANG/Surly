@@ -13,8 +13,6 @@ public class SelectParser {
     public Relation selectWhere(Relation relation, String name) {
         WhereParser whereParser = new WhereParser(getWhereClause());
         Relation tempRelation = copyRelation(relation, name);
-        tempRelation.delete();
-        tempRelation.setName(name);
         int relationSize = relation.size();
         for (int i = 0; i<relationSize; i++) {
             Tuple temp = relation.getTuple(i);
