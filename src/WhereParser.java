@@ -16,6 +16,8 @@ public class WhereParser {
         parseInput();
     }
 
+    /* Separates the expressions in the WHERE clause into the arribute names,
+     * the boolean operators, and the value that the attribute is being compared to*/
     private void parseInput() {
         String[] splitInput = input.split("\\s+");
         for (int i = 0; i<splitInput.length; i++) {
@@ -31,9 +33,12 @@ public class WhereParser {
         }
     }
 
+    /* Returns true if the AttributeValues in the tuple meet the conditions in the
+     * saved Where clause, returns false if they don't.*/
     public boolean meetsConditions(Tuple tuple) {
         return meetsConditions(tuple,logicalOperators.size());
     }
+
 
     private boolean meetsConditions(Tuple tuple, int ops) {
         if (input.equals("")) {
@@ -41,9 +46,9 @@ public class WhereParser {
         }
         boolean first = evaluate(tuple,0);
         boolean second = first;
+        /* Evaluates the expression from left to right, grouping all the "and"s together */
         for (int i = 0; i<ops; i++) {
             if (logicalOperators.get(i).equals("or")) {
-                //if next is or
                 second = evaluate(tuple,i+1); 
                 while (i+1 < ops && logicalOperators.get(i+1).equals("and")) {
                         i++;
@@ -61,6 +66,7 @@ public class WhereParser {
         return first;
     }
 
+    /* Evaluates an boolean expression of the form <value> <operator> <value>. */
     private boolean evaluate(Tuple tuple, int conditionNum) {
         String tupleValue = tuple.getValue(attributeNames.get(conditionNum));
         String compareValue = comparisons.get(conditionNum);
