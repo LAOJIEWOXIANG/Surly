@@ -56,7 +56,7 @@ public class WhereParser {
                 }
                 first = first || second;
             } else {
-                first = first && evaluate(tuple,i+1);
+                first = first && evaluate(tuple,i+1); // Is this a bug? Seems to be doing an AND operation when one is not needed.
                 while (i+1 < ops && logicalOperators.get(i+1).equals("and")) {
                     i++;
                     first = first && evaluate(tuple,i+1);

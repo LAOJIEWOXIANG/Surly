@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class LexicalAnalyzer {
@@ -102,9 +103,8 @@ public class LexicalAnalyzer {
   private void handleJoin(String command, String name) {
     JoinParser joinparser = new JoinParser(command);
     String[] relationNames = joinparser.parseRelationNames();
-    String[] conditions = joinparser.parseJoinConditions();
     // Validate and get relations
-    LinkedList<Relation> relations = new LinkedList<>();
+    ArrayList<Relation> relations = new ArrayList<>();
     for (int i = 0; i < relationNames.length; i++) {
       Relation tempRelation = this.database.getRelation(relationNames[i]);
       if(tempRelation == null) {
@@ -114,7 +114,10 @@ public class LexicalAnalyzer {
       }
     }
     // Create a new Relation from the relations to join
+    String[] conditions = joinparser.parseJoinConditions();
     Join join = new Join(relations, conditions);
+    Relation joined = join.getRelation(name);
+    this.database.createTempRelation(joined);
   }
 
   private void handleSelect(String command, String name) {
