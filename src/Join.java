@@ -17,16 +17,19 @@ public class Join {
       operators = new ArrayList<>();
       comparisons = new ArrayList<>();
       logicalOperators = new ArrayList<>();
-      parseConditions(joinConditions[0]); // needs to change with multiple conditions
+      if(joinConditions[0] != null){
+        parseConditions(joinConditions[0]); // needs to change with multiple conditions
+      }
     }
   }
 
   public Relation getRelation(String name) {
+    Relation newRelation = new Relation(name);
+    Boolean noJoinCondition = this.joinConditions[0] == null;
     // Check the Join attributes for compatible formats
-    if ( validateAttributes() ) {
+    if ( noJoinCondition || validateAttributes()) {
       /* Create a new (temporary) relation where attribute names are <attribute names from the first relation>
       then <attribute names from the second relation, minus the repeated attribute name> */
-      Relation newRelation = new Relation(name);
       // Create attributes
       LinkedList<Attribute> addedAttributes = new LinkedList<>();
       for(Relation rel : relations) {
@@ -59,7 +62,7 @@ public class Join {
           Tuple attributeTuple = attributeRelation.getTuple(j);
           for (int k = 0; k<comparisonRelationSize; k++) {
             Tuple comparisonTuple = comparisonRelation.getTuple(k);
-            if(meetsConditions(attributeTuple,comparisonTuple)){
+            if(noJoinCondition || meetsConditions(attributeTuple,comparisonTuple)){
               Tuple tuple = buildTuple(attributeTuple,comparisonTuple,newRelation.getSchema());
               newRelation.insert(tuple);
             }
@@ -81,9 +84,13 @@ public class Join {
       schemaClone.add(att);
     }
     Tuple tuple = new Tuple();
-    LinkedList<AttributeValue> allValues = attributeTuple.getValues();
-    LinkedList<AttributeValue> comparisonValueList = comparisonTuple.getValues();
-    allValues.addAll(comparisonValueList);
+    LinkedList<AttributeValue> allValues = new LinkedList<AttributeValue>();
+    for(AttributeValue value : attributeTuple.getValues()){
+      allValues.add(value);
+    }
+    for(AttributeValue value : comparisonTuple.getValues()){
+      allValues.add(value);
+    }
     for(int i = 0; i < allValues.size(); i++) {
       AttributeValue attributeValue = allValues.get(i);
       String attributeValueName = attributeValue.getName();
@@ -95,7 +102,6 @@ public class Join {
         }
       }
     }
-    System.out.println("test");
     return tuple;
   }
 
