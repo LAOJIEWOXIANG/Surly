@@ -115,8 +115,12 @@ public class LexicalAnalyzer {
     // Create a new Relation from the relations to join
     String[] conditions = joinparser.parseJoinConditions();
     Join join = new Join(relations, conditions);
-    Relation joined = join.getRelation(name);
-    this.database.createTempRelation(joined);
+    if(join.validateJoinConditionsExist()){
+      Relation joined = join.getRelation(name);
+      this.database.createTempRelation(joined);
+    } else {
+      System.out.println("Error validating join conditions, attribute may not exist.");
+    }
   }
 
   private void handleSelect(String command, String name) {

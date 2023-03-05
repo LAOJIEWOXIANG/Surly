@@ -252,4 +252,20 @@ public class Join {
   private boolean isComparisonOperator(String input) {
     return (input.contains("=") || input.contains("<") || input.contains(">"));
   }
+
+  public Boolean validateJoinConditionsExist() {
+    Boolean valid = false;
+    if(joinConditions[0] == null){
+      valid = true;
+    } else {
+      try {
+        validateAttributes();
+        valid = true;
+      } catch (Exception e) {
+        System.out.println("Attribute does not exist.");
+      }
+    }
+
+    return valid;
+  }
 }
