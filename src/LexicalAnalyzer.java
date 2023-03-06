@@ -139,9 +139,17 @@ public class LexicalAnalyzer {
 
   private void handleProject(String command, String name) {
     ProjectParser pp = new ProjectParser(command);
-    String relationName = pp.parseRelationName();
-    Relation tempRelation = pp.project(this.database.getRelation(relationName), name);
-    this.database.createTempRelation(tempRelation);
+    String relationName = pp.parseRelationName(); 
+    Relation relationToProject = database.getRelation(relationName);
+    if (relationToProject != null) {
+      Relation tempRelation = pp.project(this.database.getRelation(relationName), name);
+      if (tempRelation != null) {
+        this.database.createTempRelation(tempRelation);
+      }
+    } else {
+      System.out.print("ERROR PROJECTING FROM RELATION \"" + relationName + "\": ");
+      System.out.println("RELATION NOT FOUND.");
+    }
   }
   
 

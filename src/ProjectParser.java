@@ -15,10 +15,16 @@ public class ProjectParser {
         Relation newRelation = new Relation(name);
         /* Setting schema */
         for (String attrName : attributes) {
-            newRelation.addToSchema(relation.getAttribute(attrName));
+            Attribute currentAttribute = relation.getAttribute(attrName);
+            if (currentAttribute == null) { /* Check if attribute exists */
+                System.out.println("ERROR PROJECTING FROM RELATION: ATTRIBUTE \"" + attrName + "\" DOES NOT EXIST.");
+                return null;
+            }
+            newRelation.addToSchema(currentAttribute);
         }
         int numTuples = relation.size();
         HashMap<String,Integer> existingTuples = new HashMap<>();
+        /* Creating tuples. */
         for (int i = 0; i < numTuples; i++) {
             Tuple tuple = relation.getTuple(i);
             Tuple newTuple = new Tuple();
