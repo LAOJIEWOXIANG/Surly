@@ -160,7 +160,7 @@ public class LexicalAnalyzer {
     Relation relationToDelete = database.getRelation(relationName);
     if (relationToDelete != null) {
       if (!database.isTempRelation(relationName)) {
-        if (!command.matches("(?i).*" + "where" + ".*")) { //  delete the whole relation
+        if (!command.matches("(?i).*" + " where " + ".*")) { //  delete the whole relation
           relationToDelete.delete();
         } else {
           delete.deleteWhere(relationToDelete, relationName);
