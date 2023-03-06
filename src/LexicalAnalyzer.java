@@ -155,7 +155,6 @@ public class LexicalAnalyzer {
 
   /* Processes a DELETE command by passing it to the delete parser. */
   private void handleDelete(String command) {
-    SelectParser select = new SelectParser(command);
     DeleteParser delete = new DeleteParser(command);
     String relationName = delete.parseRelationName();
     Relation relationToDelete = database.getRelation(relationName);
@@ -164,7 +163,7 @@ public class LexicalAnalyzer {
         if (!command.matches("(?i).*" + "where" + ".*")) { //  delete the whole relation
           relationToDelete.delete();
         } else {
-          select.deleteWhere(relationToDelete, relationName);
+          delete.deleteWhere(relationToDelete, relationName);
         }
       } else {
         System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");

@@ -23,17 +23,7 @@ public class SelectParser {
         return tempRelation;
     }
 
-    public void deleteWhere(Relation relation, String name) {
-        WhereParser whereParser = new WhereParser(getWhereClause());
-        int relationSize = relation.size();
-        for (int i = 0; i<relationSize; i++) {
-            Tuple temp = relation.getTuple(i);
-            if (whereParser.meetsConditions(temp)) {
-                relation.delete_ith_Tuple(i);
-                relationSize = relation.size();
-            }
-        }
-    }
+    
 
     private Relation copyRelation(Relation relation, String name) {
         Relation newRelation = new Relation(name);

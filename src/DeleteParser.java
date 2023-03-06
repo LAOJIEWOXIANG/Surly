@@ -5,16 +5,34 @@ public class DeleteParser {
   
   /* Constructor to initialize the input field */
   public DeleteParser(String input) {
-    this.input = input;
+    this.input=input.split(";")[0];
     this.isValidSyntax = verifySyntax();
   }
   
+  public void deleteWhere(Relation relation, String name) {
+    WhereParser whereParser = new WhereParser(getWhereClause());
+    int relationSize = relation.size();
+    for (int i = 0; i<relationSize; i++) {
+        Tuple temp = relation.getTuple(i);
+        if (whereParser.meetsConditions(temp)) {
+            relation.delete_ith_Tuple(i);
+            relationSize = relation.size();
+        }
+    }
+}
+
+private String getWhereClause() {
+  int whereIndex = input.toUpperCase().indexOf("WHERE");
+  if (whereIndex != -1) {
+      return input.substring(whereIndex, input.length());
+  }
+  return ""; 
+}
+
   /* Parses and returns the name of the relation for delete */
   public String parseRelationName() {
-    /* Removes semicolon from end of command. */
-    input = input.substring(0,input.length()-1);
     return input.split("\\s+")[1];
-  }
+}
   
   /* Accessor for isValidSyntax field. */
   public boolean getIsValidSyntax() {
