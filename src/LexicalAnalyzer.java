@@ -147,13 +147,39 @@ public class LexicalAnalyzer {
 
   /* Processes a DELETE command by passing it to the delete parser. */
   private void handleDelete(String command) {
+    SelectParser select = new SelectParser(command);
     DeleteParser delete = new DeleteParser(command);
-    if (delete.getIsValidSyntax()) {
+    // if (delete.getIsValidSyntax()) {
+    //   String relationName = delete.parseRelationName();
+    //   Relation relationToDelete = database.getRelation(relationName);
+    //   if (relationToDelete != null) {
+    //     if (!database.isTempRelation(relationName)) {
+    //       if (!command.contains("where")) { //  delete the whole relation
+    //         relationToDelete.delete();
+    //       } else {
+    //         database.createTempRelation(select.deleteWherer(relationToDelete, relationName));
+    //       }
+    //     } else {
+    //       System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
+    //       System.out.println("CANNOT DELETE FROM TEMPORARY RELATION.");
+    //     }
+    //   } else {
+    //     System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
+    //     System.out.println("RELATION NOT FOUND.");
+    //   }
+    // } else {
+    //   System.out.println("INVALID SYNTAX: " + command);
+    // }
       String relationName = delete.parseRelationName();
       Relation relationToDelete = database.getRelation(relationName);
       if (relationToDelete != null) {
         if (!database.isTempRelation(relationName)) {
-          relationToDelete.delete();
+          if (!command.matches("(?i).*" + "where" + ".*")) { //  delete the whole relation
+            relationToDelete.delete();
+          } else {
+            // System.out.println("here");
+            select.deleteWhere(relationToDelete, relationName);
+          }
         } else {
           System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
           System.out.println("CANNOT DELETE FROM TEMPORARY RELATION.");
@@ -162,10 +188,8 @@ public class LexicalAnalyzer {
         System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
         System.out.println("RELATION NOT FOUND.");
       }
-    } else {
-      System.out.println("INVALID SYNTAX: " + command);
-    }
   }
+
 
   /* Processes a RELATION command by passing it to the relation parser. */
   private void handleRelation(String command) {

@@ -70,6 +70,7 @@ public class WhereParser {
     private boolean evaluate(Tuple tuple, int conditionNum) {
         String tupleValue = tuple.getValue(attributeNames.get(conditionNum));
         String compareValue = comparisons.get(conditionNum);
+        System.out.println(tupleValue + " compare to " + compareValue);
         switch(operators.get(conditionNum)) {
             case "=":
               return tupleValue.equals(compareValue);

@@ -34,6 +34,11 @@ public class Tuple {
     return this.values.get(i).getValue();
   }
   
+  /* Returns the name of the attribute at index i */
+  public String getName(int i) {
+    return this.values.get(i).getName();
+  }
+
   /* Sets the name of the AttributeValue at index i to the given String. */
   public void setName(int i, String name) {
     this.values.get(i).setName(name);
