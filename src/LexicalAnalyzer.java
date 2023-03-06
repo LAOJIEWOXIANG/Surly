@@ -164,7 +164,6 @@ public class LexicalAnalyzer {
         if (!command.matches("(?i).*" + "where" + ".*")) { //  delete the whole relation
           relationToDelete.delete();
         } else {
-          // System.out.println("here");
           select.deleteWhere(relationToDelete, relationName);
         }
       } else {
