@@ -1,8 +1,10 @@
 public class SelectParser {
     private String input;
-
+    private boolean isValidSyntax;
+    
     SelectParser(String input) {
         this.input=input.split(";")[0];
+        this.isValidSyntax = verifySyntax();
     }
     public String parseRelationName() {
         return input.split("\\s+")[1];
@@ -45,4 +47,13 @@ public class SelectParser {
         }
         return ""; 
     }
+
+    /* Accessor for isValidSyntax field. */
+    public boolean getIsValidSyntax() {
+        return this.isValidSyntax;
+    }
+
+    public boolean verifySyntax() {
+        return this.input.matches("(?i)SELECT\\s+\\w+(\\s+WHERE\\s+\\S+\\s+(=|!=|<|>|<=|>=)\\s+(\\S+|'.*')(\\s+(and|or)\\s+\\S+\\s+(=|!=|<|>|<=|>=)\\s+(\\S+|'.*'))*){0,1}\\s*");
+      }
 }

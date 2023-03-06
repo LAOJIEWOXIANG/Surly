@@ -124,17 +124,22 @@ public class LexicalAnalyzer {
   }
 
   private void handleSelect(String command, String name) {
+    
     SelectParser select = new SelectParser(command);
-    String relationName = select.parseRelationName();
-    Relation selectedRelation = database.getRelation(relationName);
-    if (selectedRelation != null) {
-      Relation tempRelation = select.selectWhere(selectedRelation, name);
-      if (tempRelation != null) {
-        database.createTempRelation(tempRelation);
-      } 
+    if (select.getIsValidSyntax()) {
+      String relationName = select.parseRelationName();
+      Relation selectedRelation = database.getRelation(relationName);
+      if (selectedRelation != null) {
+        Relation tempRelation = select.selectWhere(selectedRelation, name);
+        if (tempRelation != null) {
+          database.createTempRelation(tempRelation);
+        } 
+      } else {
+        System.out.print("ERROR SELECTING FROM RELATION \"" + relationName + "\": ");
+        System.out.println("RELATION NOT FOUND.");
+      }
     } else {
-      System.out.print("ERROR SELECTING FROM RELATION \"" + relationName + "\": ");
-      System.out.println("RELATION NOT FOUND.");
+      System.out.println("INVALID SYNTAX: " + command);
     }
   }
   
