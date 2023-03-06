@@ -52,10 +52,20 @@ public class SurlyDatabase {
   
   /* Adds the given relation to the database */
   public void createRelation(Relation relation) {
-    this.relations.add(relation);
-    if(relation != this.catalog) {
-      addRelationToCatalog(relation);
-    }
+    String relationName = relation.getName();
+    Relation existingRelation = getRelation(relationName);
+    if (existingRelation == null) {
+      this.relations.add(relation);
+      if(relation != this.catalog) {
+        addRelationToCatalog(relation);
+      }
+    } else if (isTempRelation(relationName)) {
+      this.relations.remove(existingRelation);
+      this.relations.add(relation);
+      if(relation != this.catalog) {
+        addRelationToCatalog(relation);
+      }
+    } 
   }
   
   /* Creates relation like normal but does not add it to CATALOG. */
