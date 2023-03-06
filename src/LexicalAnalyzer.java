@@ -161,21 +161,25 @@ public class LexicalAnalyzer {
     DeleteParser delete = new DeleteParser(command);
     String relationName = delete.parseRelationName();
     Relation relationToDelete = database.getRelation(relationName);
-    if (relationToDelete != null) {
-      if (!database.isTempRelation(relationName)) {
-        if (!command.matches("(?i).*" + " where " + ".*")) { //  delete the whole relation
-          relationToDelete.delete();
+    if (delete.getIsValidSyntax()) {
+      if (relationToDelete != null) {
+        if (!database.isTempRelation(relationName)) {
+          if (!command.matches("(?i).*" + " where " + ".*")) { //  delete the whole relation
+            relationToDelete.delete();
+          } else {
+            delete.deleteWhere(relationToDelete, relationName);
+          }
         } else {
-          delete.deleteWhere(relationToDelete, relationName);
+          System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
+          System.out.println("CANNOT DELETE FROM TEMPORARY RELATION.");
         }
       } else {
         System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
-        System.out.println("CANNOT DELETE FROM TEMPORARY RELATION.");
+        System.out.println("RELATION NOT FOUND.");
       }
-    } else {
-      System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
-      System.out.println("RELATION NOT FOUND.");
-    }
+  } else {
+    System.out.println("INVALID SYNTAX: " + command);
+  }
   }
 
 
@@ -247,7 +251,7 @@ public class LexicalAnalyzer {
   private void handleDestroy(String command) {
     DestroyParser destroy = new DestroyParser(command);
     String relationName = destroy.parseRelationName();
-    if (destroy.getIsValidSyntax() == true) {
+    if (destroy.getIsValidSyntax()) {
       if (this.database.getRelation(relationName) != null) {
         if (!database.isTempRelation(relationName)) {
           this.database.destroyRelation(relationName);

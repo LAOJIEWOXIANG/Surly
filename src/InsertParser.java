@@ -66,7 +66,7 @@ public class InsertParser {
   * strings are accepted in <list> :
   */
   private boolean verifySyntax() {
-    return this.input.matches("INSERT\\s+\\w+\\s+(\\S+)\\s*((\\s+(\\S+))*)\\s*;");
+    return this.input.matches("(?i)INSERT\\s+\\w+\\s+(\\S+)\\s*((\\s+(\\S+))*)\\s*;");
   }
   
   /* Removes semicolon from end of given String and returns it. */

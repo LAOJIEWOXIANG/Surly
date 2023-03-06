@@ -22,6 +22,6 @@ public class DestroyParser {
   /* Checks if String is in the form "DESTROY <Relation Name>;"
   * where <Relation Name> is any string of non-whitespace characters. */
   public boolean verifySyntax() {
-    return this.input.matches("DESTROY\\s+(\\w+\\s*,\\s*)*\\w+\\s*;");
+    return this.input.matches("(?i)DESTROY\\s+(\\w+\\s*,\\s*)*\\w+\\s*;");
   }
 }

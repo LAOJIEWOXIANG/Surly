@@ -62,6 +62,6 @@ public class RelationParser {
   */
   private boolean verifySyntax() {
     return this.input.matches(
-    "RELATION\\s+\\w+\\s*\\(\\s*((\\w+\\s+\\w+\\s+\\w+\\s*,\\s*)*(\\w+\\s+\\w+\\s+\\w+\\s*)*)\\s*\\)\\s*;");
+    "(?i)RELATION\\s+\\w+\\s*\\(\\s*((\\w+\\s+\\w+\\s+\\w+\\s*,\\s*)*(\\w+\\s+\\w+\\s+\\w+\\s*)*)\\s*\\)\\s*;");
   }
 }
