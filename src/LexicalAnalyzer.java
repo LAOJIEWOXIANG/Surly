@@ -58,7 +58,7 @@ public class LexicalAnalyzer {
       command = command.split("\\s+",3)[2];
     }
     String commandType = command.split("\\s+",2)[0];
-    switch (commandType) {
+    switch (commandType.toUpperCase()) {
       case "RELATION": {
         handleRelation(command);
         break;
@@ -124,14 +124,22 @@ public class LexicalAnalyzer {
   }
 
   private void handleSelect(String command, String name) {
+    
     SelectParser select = new SelectParser(command);
-    String relationName = select.parseRelationName();
-    Relation selectedRelation = database.getRelation(relationName);
-    if (selectedRelation != null) {
-      database.createTempRelation(select.selectWhere(selectedRelation, name));
+    if (select.getIsValidSyntax()) {
+      String relationName = select.parseRelationName();
+      Relation selectedRelation = database.getRelation(relationName);
+      if (selectedRelation != null) {
+        Relation tempRelation = select.selectWhere(selectedRelation, name);
+        if (tempRelation != null) {
+          database.createTempRelation(tempRelation);
+        } 
+      } else {
+        System.out.print("ERROR SELECTING FROM RELATION \"" + relationName + "\": ");
+        System.out.println("RELATION NOT FOUND.");
+      }
     } else {
-      System.out.print("ERROR SELECTING FROM RELATION \"" + relationName + "\": ");
-      System.out.println("RELATION NOT FOUND.");
+      System.out.println("INVALID SYNTAX: " + command);
     }
   }
   
@@ -155,38 +163,38 @@ public class LexicalAnalyzer {
 
   /* Processes a DELETE command by passing it to the delete parser. */
   private void handleDelete(String command) {
-    SelectParser select = new SelectParser(command);
     DeleteParser delete = new DeleteParser(command);
     String relationName = delete.parseRelationName();
     Relation relationToDelete = database.getRelation(relationName);
-    if (relationToDelete != null) {
-      if (!database.isTempRelation(relationName)) {
-        if (!command.matches("(?i).*" + "where" + ".*")) { //  delete the whole relation
-          relationToDelete.delete();
+    if (delete.getIsValidSyntax()) {
+      if (relationToDelete != null) {
+        if (!database.isTempRelation(relationName)) {
+          if (!command.matches("(?i).*" + " where " + ".*")) { //  delete the whole relation
+            relationToDelete.delete();
+          } else {
+            delete.deleteWhere(relationToDelete, relationName);
+          }
         } else {
-          select.deleteWhere(relationToDelete, relationName);
+          System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
+          System.out.println("CANNOT DELETE FROM TEMPORARY RELATION.");
         }
       } else {
         System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
-        System.out.println("CANNOT DELETE FROM TEMPORARY RELATION.");
+        System.out.println("RELATION NOT FOUND.");
       }
-    } else {
-      System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
-      System.out.println("RELATION NOT FOUND.");
-    }
+  } else {
+    System.out.println("INVALID SYNTAX: " + command);
+  }
   }
 
 
   /* Processes a RELATION command by passing it to the relation parser. */
   private void handleRelation(String command) {
     RelationParser relationParser = new RelationParser(command);
-    String relationName = relationParser.parseRelationName();
     if (relationParser.getIsValidSyntax()) {
-      if (this.database.getRelation(relationName) == null) {
-        Relation newRelation = relationParser.parseRelation();
-        if (newRelation != null) {
-          this.database.createRelation(newRelation);
-        }
+      Relation newRelation = relationParser.parseRelation();
+      if (newRelation != null) {
+        this.database.createRelation(newRelation);
       }
     } else {
       System.out.println("INVALID SYNTAX: " + command);
@@ -248,7 +256,7 @@ public class LexicalAnalyzer {
   private void handleDestroy(String command) {
     DestroyParser destroy = new DestroyParser(command);
     String relationName = destroy.parseRelationName();
-    if (destroy.getIsValidSyntax() == true) {
+    if (destroy.getIsValidSyntax()) {
       if (this.database.getRelation(relationName) != null) {
         if (!database.isTempRelation(relationName)) {
           this.database.destroyRelation(relationName);

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class WhereParser {
     private final char SINGLE_QUOTE = 39;
     private String input;
+    private boolean checkedAttributesExist = false;
     private ArrayList<String> attributeNames;
     private ArrayList<String> operators;
     private ArrayList<String> comparisons;
@@ -37,7 +38,10 @@ public class WhereParser {
 
     /* Returns true if the AttributeValues in the tuple meet the conditions in the
      * saved Where clause, returns false if they don't.*/
-    public boolean meetsConditions(Tuple tuple) {
+    public Boolean meetsConditions(Tuple tuple) {
+        if (!checkedAttributesExist && !attributesExist(tuple)) {
+            return null;
+        }
         return meetsConditions(tuple,logicalOperators.size());
     }
 
@@ -68,9 +72,20 @@ public class WhereParser {
         return first;
     }
 
+    public boolean attributesExist(Tuple tuple) {
+        for (String name : attributeNames) {
+            if (tuple.getValue(name) == null) {
+                return false;
+            }
+        }
+        checkedAttributesExist = true;
+        return true;
+    }
+
     /* Evaluates an boolean expression of the form <value> <operator> <value>. */
     private boolean evaluate(Tuple tuple, int conditionNum) {
-        String tupleValue = tuple.getValue(attributeNames.get(conditionNum));
+        String attributeName = attributeNames.get(conditionNum);
+        String tupleValue = tuple.getValue(attributeName);
         String compareValue = comparisons.get(conditionNum);
         switch(operators.get(conditionNum)) {
             case "=":

@@ -27,6 +27,6 @@ public class PrintParser {
   * items separated by commas and any amount of whitespace
   */
   private boolean verifySyntax() {
-    return this.input.matches("PRINT\\s+(\\w+\\s*,\\s*)*\\w+\\s*;");
+    return this.input.matches("(?i)PRINT\\s+(\\w+\\s*,\\s*)*\\w+\\s*;");
   }
 }

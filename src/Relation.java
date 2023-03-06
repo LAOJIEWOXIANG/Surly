@@ -12,7 +12,7 @@ public class Relation {
     this.tuples = new LinkedList<>();
   }
   
-  //maybe we shouldnt return Tuples but we can deal with that later
+  
   public Tuple getTuple(int index) {
     return tuples.get(index);
   }
