@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 
 public class WhereParser {
+    private final char SINGLE_QUOTE = 39;
     private String input;
     private ArrayList<String> attributeNames;
     private ArrayList<String> operators;
     private ArrayList<String> comparisons;
     private ArrayList<String> logicalOperators;
+    
 
     public WhereParser(String input) {
         this.input = input;
@@ -19,15 +21,15 @@ public class WhereParser {
     /* Separates the expressions in the WHERE clause into the arribute names,
      * the boolean operators, and the value that the attribute is being compared to*/
     private void parseInput() {
-        String[] splitInput = input.split("\\s+");
-        for (int i = 0; i<splitInput.length; i++) {
-            if (isComparisonOperator(splitInput[i])) {
-                attributeNames.add(splitInput[i-1]);
-                operators.add(splitInput[i]);
-                comparisons.add(splitInput[i+1]);
-            } else if (splitInput[i].equalsIgnoreCase("and")) {
+        ArrayList<String> splitInput = splitInput();
+        for (int i = 0; i<splitInput.size(); i++) {
+            if (isComparisonOperator(splitInput.get(i))) {
+                attributeNames.add(splitInput.get(i-1));
+                operators.add(splitInput.get(i));
+                comparisons.add(splitInput.get(i+1));
+            } else if (splitInput.get(i).equalsIgnoreCase("and")) {
                 logicalOperators.add("and");
-            } else if (splitInput[i].equalsIgnoreCase("or")) {
+            } else if (splitInput.get(i).equalsIgnoreCase("or")) {
                 logicalOperators.add("or");
             }
         }
@@ -85,6 +87,40 @@ public class WhereParser {
             return compareAttributes(tupleValue, compareValue) >= 0;
         }
         return true;
+    }
+
+    private ArrayList<String> splitInput() {
+        ArrayList<String> split = new ArrayList<>();
+        for (int i = 0; i < input.length(); i++) {
+      
+            /* If the current char is a single quote, add everything
+            inside it to the tuple. */
+            if (input.charAt(i) == SINGLE_QUOTE) {
+              i++;
+              String betweenQuotes = "";
+              while (input.charAt(i) != SINGLE_QUOTE) {
+                betweenQuotes += input.charAt(i);
+                i++;
+                if (i == input.length()) {
+                  System.out.println("SYNTAX ERROR FOR \"" + this.input
+                                     + "\": MISSING CLOSING \"'\".");
+                  return null;
+                }
+              }
+              split.add(betweenQuotes);
+              
+              /* If the current char isn't a space, read until a space
+              and add that string to the tuple. */
+            } else if (!Character.isWhitespace(input.charAt(i))) {
+              String element = "";
+              while (i < input.length() && !Character.isWhitespace(input.charAt(i))) {
+                element += input.charAt(i);
+                i++;
+              }
+              split.add(element);
+            }
+          }
+        return split;
     }
 
     /* Returns negative if attribute1 is less than attribute2, returns 0 if they are the same,
