@@ -17,6 +17,7 @@ public class DeleteParser {
         if (whereParser.meetsConditions(temp)) {
             relation.delete_ith_Tuple(i);
             relationSize = relation.size();
+            i--;
         }
     }
 }
