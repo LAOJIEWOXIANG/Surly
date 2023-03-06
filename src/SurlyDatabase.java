@@ -1,3 +1,4 @@
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class SurlyDatabase {
@@ -59,7 +60,12 @@ public class SurlyDatabase {
   
   /* Creates relation like normal but does not add it to CATALOG. */
   public void createTempRelation(Relation relation) {
-    if(getRelation(relation.getName()) == null) {
+    String relationName = relation.getName();
+    Relation existingRelation = getRelation(relationName);
+    if(existingRelation == null) {
+      this.relations.add(relation);
+    } else if (isTempRelation(relationName)){
+      this.relations.remove(existingRelation);
       this.relations.add(relation);
     } else {
       System.out.println("ERROR CREATING TEMPORARY RELATION \"" + 
