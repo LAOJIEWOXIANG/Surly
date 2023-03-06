@@ -128,7 +128,10 @@ public class LexicalAnalyzer {
     String relationName = select.parseRelationName();
     Relation selectedRelation = database.getRelation(relationName);
     if (selectedRelation != null) {
-      database.createTempRelation(select.selectWhere(selectedRelation, name));
+      Relation tempRelation = select.selectWhere(selectedRelation, name);
+      if (tempRelation != null) {
+        database.createTempRelation(tempRelation);
+      } 
     } else {
       System.out.print("ERROR SELECTING FROM RELATION \"" + relationName + "\": ");
       System.out.println("RELATION NOT FOUND.");

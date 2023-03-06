@@ -14,13 +14,19 @@ public class DeleteParser {
     int relationSize = relation.size();
     for (int i = 0; i<relationSize; i++) {
         Tuple temp = relation.getTuple(i);
-        if (whereParser.meetsConditions(temp)) {
-            relation.delete_ith_Tuple(i);
-            relationSize = relation.size();
-            i--;
-        }
+        Boolean meetsConditions = whereParser.meetsConditions(temp);
+        if (meetsConditions != null) {
+            if (meetsConditions) {
+              relation.delete_ith_Tuple(i);
+              relationSize = relation.size();
+              i--;
+            }
+        } else {
+            System.out.println("ERROR DELETING FROM RELATION: ATTRIBUTE DOES NOT EXIST.");
+            return;
+        }  
     }
-}
+  }
 
 private String getWhereClause() {
   int whereIndex = input.toUpperCase().indexOf("WHERE");

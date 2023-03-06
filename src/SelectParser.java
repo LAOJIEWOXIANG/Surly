@@ -16,14 +16,18 @@ public class SelectParser {
         int relationSize = relation.size();
         for (int i = 0; i<relationSize; i++) {
             Tuple temp = relation.getTuple(i);
-            if (whereParser.meetsConditions(temp)) {
-                tempRelation.insert(temp);
+            Boolean meetsConditions = whereParser.meetsConditions(temp);
+            if (meetsConditions != null) {
+                if (meetsConditions) {
+                    tempRelation.insert(temp);
+                }
+            } else {
+                System.out.println("ERROR SELECTING FROM RELATION: ATTRIBUTE DOES NOT EXIST.");
+                return null;
             }
         }
         return tempRelation;
     }
-
-    
 
     private Relation copyRelation(Relation relation, String name) {
         Relation newRelation = new Relation(name);
