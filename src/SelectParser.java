@@ -30,8 +30,9 @@ public class SelectParser {
             Tuple temp = relation.getTuple(i);
             if (whereParser.meetsConditions(temp)) {
                 relation.delete_ith_Tuple(i);
+                i--;
                 relationSize = relation.size();
-                System.out.println("num of tuples: " + relationSize);
+                // System.out.println("num of tuples: " + relationSize);
             }
         }
     }

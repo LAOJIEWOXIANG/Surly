@@ -145,9 +145,10 @@ public class Relation {
     return isDeleted;
   }
   
-public void delete_ith_Tuple(int i) {
-  this.tuples.remove(i);
-}
+  /* Deletes the ith tuple from relation */
+  public void delete_ith_Tuple(int i) {
+    this.tuples.remove(i);
+  }
 
   /* Adds specified attribute to the schema. */
   public void addToSchema(Attribute attribute) {

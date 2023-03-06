@@ -50,16 +50,16 @@ public class WhereParser {
         boolean second = first;
         /* Evaluates the expression from left to right, grouping all the "and"s together */
         for (int i = 0; i<ops; i++) {
-            if (logicalOperators.get(i).equals("or")) {
+            if (logicalOperators.get(i).equalsIgnoreCase("or")) {
                 second = evaluate(tuple,i+1); 
-                while (i+1 < ops && logicalOperators.get(i+1).equals("and")) {
+                while (i+1 < ops && logicalOperators.get(i+1).equalsIgnoreCase("and")) {
                         i++;
                         second = second && evaluate(tuple,i+1);
                 }
                 first = first || second;
             } else {
                 first = first && evaluate(tuple,i+1);
-                while (i+1 < ops && logicalOperators.get(i+1).equals("and")) {
+                while (i+1 < ops && logicalOperators.get(i+1).equalsIgnoreCase("and")) {
                     i++;
                     first = first && evaluate(tuple,i+1);
                 }
@@ -72,7 +72,7 @@ public class WhereParser {
     private boolean evaluate(Tuple tuple, int conditionNum) {
         String tupleValue = tuple.getValue(attributeNames.get(conditionNum));
         String compareValue = comparisons.get(conditionNum);
-        System.out.println(tupleValue + " compare to " + compareValue);
+        // System.out.println(tupleValue + " compare to " + compareValue);
         switch(operators.get(conditionNum)) {
             case "=":
               return tupleValue.equals(compareValue);
