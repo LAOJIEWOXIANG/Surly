@@ -149,45 +149,24 @@ public class LexicalAnalyzer {
   private void handleDelete(String command) {
     SelectParser select = new SelectParser(command);
     DeleteParser delete = new DeleteParser(command);
-    // if (delete.getIsValidSyntax()) {
-    //   String relationName = delete.parseRelationName();
-    //   Relation relationToDelete = database.getRelation(relationName);
-    //   if (relationToDelete != null) {
-    //     if (!database.isTempRelation(relationName)) {
-    //       if (!command.contains("where")) { //  delete the whole relation
-    //         relationToDelete.delete();
-    //       } else {
-    //         database.createTempRelation(select.deleteWherer(relationToDelete, relationName));
-    //       }
-    //     } else {
-    //       System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
-    //       System.out.println("CANNOT DELETE FROM TEMPORARY RELATION.");
-    //     }
-    //   } else {
-    //     System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
-    //     System.out.println("RELATION NOT FOUND.");
-    //   }
-    // } else {
-    //   System.out.println("INVALID SYNTAX: " + command);
-    // }
-      String relationName = delete.parseRelationName();
-      Relation relationToDelete = database.getRelation(relationName);
-      if (relationToDelete != null) {
-        if (!database.isTempRelation(relationName)) {
-          if (!command.matches("(?i).*" + "where" + ".*")) { //  delete the whole relation
-            relationToDelete.delete();
-          } else {
-            // System.out.println("here");
-            select.deleteWhere(relationToDelete, relationName);
-          }
+    String relationName = delete.parseRelationName();
+    Relation relationToDelete = database.getRelation(relationName);
+    if (relationToDelete != null) {
+      if (!database.isTempRelation(relationName)) {
+        if (!command.matches("(?i).*" + "where" + ".*")) { //  delete the whole relation
+          relationToDelete.delete();
         } else {
-          System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
-          System.out.println("CANNOT DELETE FROM TEMPORARY RELATION.");
+          // System.out.println("here");
+          select.deleteWhere(relationToDelete, relationName);
         }
       } else {
         System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
-        System.out.println("RELATION NOT FOUND.");
+        System.out.println("CANNOT DELETE FROM TEMPORARY RELATION.");
       }
+    } else {
+      System.out.print("ERROR DELETING FROM RELATION \"" + relationName + "\": ");
+      System.out.println("RELATION NOT FOUND.");
+    }
   }
 
 
