@@ -21,6 +21,10 @@ public class Relation {
     return schema.get(index);
   }
 
+  public LinkedList<Attribute> getSchema() {
+    return this.schema;
+  }
+
   public void setName(String name) {
     this.name = name;
   }

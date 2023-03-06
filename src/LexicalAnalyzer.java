@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LexicalAnalyzer {
   
@@ -87,6 +88,10 @@ public class LexicalAnalyzer {
         handleSelect(command, tempRelationName);
         break;
       }
+      case "JOIN": {
+        handleJoin(command, tempRelationName);
+        break;
+      }
       default:
       if (!command.equals("")) {
         System.out.println("INVALID COMMAND: " + command);
@@ -94,6 +99,29 @@ public class LexicalAnalyzer {
     }
   }
 
+  private void handleJoin(String command, String name) {
+    JoinParser joinparser = new JoinParser(command);
+    String[] relationNames = joinparser.parseRelationNames();
+    // Validate and get relations
+    ArrayList<Relation> relations = new ArrayList<>();
+    for (int i = 0; i < relationNames.length; i++) {
+      Relation tempRelation = this.database.getRelation(relationNames[i]);
+      if(tempRelation == null) {
+        System.out.println("RELATION NOT FOUND: " + relationNames[i]);
+      }else {
+        relations.add(tempRelation);
+      }
+    }
+    // Create a new Relation from the relations to join
+    String[] conditions = joinparser.parseJoinConditions();
+    Join join = new Join(relations, conditions);
+    if(join.validateJoinConditionsExist()){
+      Relation joined = join.getRelation(name);
+      this.database.createTempRelation(joined);
+    } else {
+      System.out.println("Error validating join conditions, attribute may not exist.");
+    }
+  }
 
   private void handleSelect(String command, String name) {
     SelectParser select = new SelectParser(command);

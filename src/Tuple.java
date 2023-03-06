@@ -8,6 +8,11 @@ public class Tuple {
   public Tuple() {
     this.values = new LinkedList<>();
   }
+
+  // Returns an attributeValue at index "i" of  values
+  public AttributeValue getAttributeValue(int i) {
+    return this.values.get(i);
+  }
   
   /* Returns the value of the specified attribute, or returns null
   if none of the attributes have the specified attribute name. */
@@ -49,5 +54,9 @@ public class Tuple {
   /* Adds given AttributeValue to the list of values. */
   public void add(AttributeValue attribute) {
     this.values.add(attribute);
+  }
+
+  public LinkedList<AttributeValue> getValues() {
+    return values;
   }
 }
